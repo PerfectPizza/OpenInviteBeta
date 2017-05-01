@@ -30,6 +30,10 @@
     "eslint-plugin-react": "^6.10.3"
   },
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true
+    },
     "extends": "airbnb"
   }
 }
