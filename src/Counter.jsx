@@ -1,7 +1,7 @@
 import React from 'react';
 
 // simple incrementing counter button
-class Counter extends React.Component {
+export default class Counter extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -21,4 +21,3 @@ class Counter extends React.Component {
     );
   }
 }
-export default Counter;
