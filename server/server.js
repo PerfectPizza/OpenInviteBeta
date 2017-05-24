@@ -1,13 +1,20 @@
+/* eslint no-unused-vars: "warn" */
+
 const express = require('express');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpack = require('webpack');
-const webpackConfig = require('./webpack.config.js');
+const webpackConfig = require('../webpack.config.js');
+const path = require('path');
+const router = require('./router.js');
+const connection = require('./db');
+const bodyParser = require('body-parser');
 
-const app = express();
 const compiler = webpack(webpackConfig);
+const app = express();
 
-app.use(express.static(`${__dirname}/www`));
-
+app.use(bodyParser.json());
+app.use('/api/', router);
+app.use(express.static(path.join(__dirname, '../www')));
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
   filename: 'bundle.js',
@@ -21,5 +28,5 @@ app.use(webpackDevMiddleware(compiler, {
 const server = app.listen(3000, () => {
   const host = server.address().address;
   const port = server.address().port;
-  console.log('App listening at http://%s:%s', host, port);
+  console.log(`App listening at http://${host}:${port}`);
 });
