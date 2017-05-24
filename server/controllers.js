@@ -121,4 +121,21 @@ module.exports = {
         res.status(500).send(err);
       });
   },
+  removeAttendee(req, res) {
+    Event.findById(req.params.event_id)
+      .then((event) => {
+        event.attendees.pull(req.params.FBID);
+        event.save()
+          .then((updatedEvent) => {
+            res.send(updatedEvent.attendees);
+          })
+          .catch((err) => {
+            console.error('error saving event after removing an attendee', err);
+          });
+      })
+      .catch((err) => {
+        console.error('error finding an event in removeAttendee', err);
+        res.status(500).send(err);
+      });
+  },
 };
