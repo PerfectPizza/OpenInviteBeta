@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=dev node -r dotenv/config server/server.js dotenv_config_path=/server/config/",
     "compile": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test mocha",
     "lint": "node_modules/.bin/eslint ."
   },
   "keywords": [],
@@ -40,7 +40,8 @@
     },
     "extends": "airbnb",
     "rules": {
-      "no-console": 0
+      "no-console": 0,
+      "no-underscore-dangle": 0
     }
   }
 }
