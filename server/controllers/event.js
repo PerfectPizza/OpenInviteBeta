@@ -1,6 +1,7 @@
 const { Event } = require('../models');
 
 function parseErr(err) {
+  if (!err.errors) return err;
   const errorKeys = Object.keys(err.errors);
   const messages = [];
   for (let i = 0; i < errorKeys.length; i += 1) {
@@ -17,7 +18,7 @@ module.exports = {
         res.send(savedEvent);
       })
       .catch((err) => {
-        console.error(parseErr(err));
+        console.error('error creating event', parseErr(err));
         res.status(500).send(parseErr(err));
       });
   },

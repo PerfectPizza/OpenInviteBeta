@@ -4,15 +4,16 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-Date.prototype.addHours = (h) => {
+Date.prototype.addHours = function (h) {
   this.setHours(this.getHours() + h);
   return this;
 };
 
+const User = require('./User');
+
 const EventSchema = new Schema({
   creator: {
     type: String,
-    ref: 'User',
     required: [true, 'Creator is a required field. It should be their FBID'],
   },
   description: { type: String },
@@ -29,7 +30,7 @@ const EventSchema = new Schema({
     required: [true, 'A valid end time is required for each event'],
   },
   createdAt: { type: Date, expires: 60 * 60 * 24 * 2, default: Date.now },
-  attendees: [{ type: String, ref: 'User' }],
+  attendees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   location: {
     lat: {
       type: String,
@@ -42,7 +43,7 @@ const EventSchema = new Schema({
   },
 });
 
-EventSchema.pre('validate', (next) => {
+EventSchema.pre('validate', function (next) {
   let error = '';
   if (this.start_time > this.end_time) {
     error += 'End time must come after start time. ';
@@ -56,6 +57,17 @@ EventSchema.pre('validate', (next) => {
   } else {
     next();
   }
+});
+
+EventSchema.post('save', (event, next) => {
+  User.findOne({ FBID: event.creator })
+    .then((user) => {
+      user.events.push(event._id);
+      user.save().then(next);
+    })
+    .catch((err) => {
+      next(Error(err));
+    });
 });
 
 module.exports = mongoose.model('Event', EventSchema);
