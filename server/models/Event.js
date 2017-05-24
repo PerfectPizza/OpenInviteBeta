@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-Date.prototype.addHours = function (h) {
+Date.prototype.addHours = (h) => {
   this.setHours(this.getHours() + h);
   return this;
 };
@@ -42,7 +42,7 @@ const EventSchema = new Schema({
   },
 });
 
-EventSchema.pre('validate', function (next) {
+EventSchema.pre('validate', (next) => {
   let error = '';
   if (this.start_time > this.end_time) {
     error += 'End time must come after start time. ';

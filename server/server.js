@@ -1,4 +1,6 @@
 /* eslint no-unused-vars: "warn" */
+require('dotenv').config({ path: '/config/' });
+require('./config/db');
 
 const express = require('express');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -6,7 +8,6 @@ const webpack = require('webpack');
 const webpackConfig = require('../webpack.config.js');
 const path = require('path');
 const router = require('./router.js');
-const connection = require('./db');
 const bodyParser = require('body-parser');
 
 const compiler = webpack(webpackConfig);

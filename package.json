@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon server/server.js",
+    "start": "NODE_ENV=dev node -r dotenv/config server/server.js dotenv_config_path=/server/config/",
     "compile": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "node_modules/.bin/eslint ."
@@ -18,6 +18,7 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "mongoose": "^4.10.2",
     "react": "^15.5.4",
@@ -37,6 +38,9 @@
       "browser": true,
       "node": true
     },
-    "extends": "airbnb"
+    "extends": "airbnb",
+    "rules": {
+      "no-console": 0
+    }
   }
 }
