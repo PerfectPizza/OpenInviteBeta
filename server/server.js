@@ -1,4 +1,5 @@
 /* eslint no-unused-vars: "warn" */
+
 require('dotenv').config({ path: '/config/' });
 require('./config/db');
 
