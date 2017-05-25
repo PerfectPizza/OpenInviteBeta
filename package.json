@@ -1,37 +1,51 @@
 {
-  "name": "reactReduxRefresher",
-  "version": "1.0.0",
+  "name": "OpenInviteBeta",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon server/server.js",
-    "compile": "webpack",
+    "build": "webpack",
     "test": "NODE_ENV=test mocha",
     "lint": "node_modules/.bin/eslint ."
   },
-  "keywords": [],
+  "keywords": [
+    "facebook",
+    "networking",
+    "social",
+    "hangout",
+    "friends"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
-    "babel-preset-latest": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "mongoose": "^4.10.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "webpack": "^2.4.1",
-    "webpack-dev-middleware": "^1.10.2"
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.2",
+    "enzyme": "^2.8.2",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.3"
+    "eslint-plugin-react": "^6.10.3",
+    "react-test-renderer": "^15.5.4",
+    "style-loader": "^0.18.1",
+    "webpack": "^2.6.0",
+    "webpack-dev-middleware": "^1.10.2"
   },
   "eslintConfig": {
     "env": {
