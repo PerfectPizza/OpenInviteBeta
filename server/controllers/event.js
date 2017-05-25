@@ -83,7 +83,7 @@ module.exports = {
         }
       });
   },
-  removeAttendee(req, res) {
+  removeAttendeeByEventId(req, res) {
     Event.findByIdAndUpdate(req.params.event_id,
       { $pull: { attendees: req.params._id } })
       .exec((err, event) => {

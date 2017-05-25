@@ -14,6 +14,6 @@ router.post('/event/:event_id/attendee', event.addAttendeeByEventId);
 router.put('/event/:event_id', event.updateEvent);
 
 router.delete('/event/:event_id', event.deleteEvent);
-router.delete('/event/:event_id/attendee/:_id', event.removeAttendee);
+router.delete('/event/:event_id/attendee/:_id', event.removeAttendeeByEventId);
 
 module.exports = router;
