@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-export default EventSummary (props) => {
-    const {name, type, startTime, endTime, host, attendees} = this.props.event;
-
-    return (
-      <div>
-        <h2>{name}</h2>
-      </div>
-    );
+const EventSummary = (props) => {
+  const { title, startTime, endTime, host, attendees } = props.event;
+  return (
+    <div>
+      <h2>{title}</h2>
+      <ul>
+        <li>{host}</li>
+        <li>{startTime}</li>
+        <li>{endTime}</li>
+        <li>{attendees}</li>
+      </ul>
+    </div>
+  );
 };
+
+EventSummary.propTypes = {
+  event: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    startTime: PropTypes.date.isRequired,
+    endTime: PropTypes.date.isRequired,
+    attendees: PropTypes.array.isRequired,
+  }).isRequired,
+};
+
+export default EventSummary;

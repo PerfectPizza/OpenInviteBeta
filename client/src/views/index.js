@@ -5,5 +5,5 @@ import EventFullView from './EventFullView';
 export default {
   EventEditView,
   EventsDashView,
-  EventFullView
+  EventFullView,
 };

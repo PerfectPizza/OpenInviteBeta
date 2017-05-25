@@ -1,8 +1,10 @@
 import React from 'react';
 
-export default Map (props) => {
-  
-  return (
+const GMap = () => (
+  <div>
+    <h1>The Map</h1>
+    <div id="map" />
+  </div>
+);
 
-  );
-};
+export default GMap;
