@@ -1,42 +1,41 @@
 const { User } = require('../models');
+const { parseErr } = require('./util');
 
 module.exports = {
   getAllUsers(req, res) {
-    return User.find({})
-      .then((users) => {
-        res.send(users);
-      })
-      .catch((err) => {
-        console.error('error in getAllUsers', err);
-        res.status(500).send(err);
+    User.find({})
+      .populate('events')
+      .exec((err, users) => {
+        if (err) {
+          console.error('error in getAllUsers', parseErr(err));
+          res.status(500).send(parseErr(err));
+        } else {
+          res.send(users);
+        }
       });
   },
   getUser(req, res) {
-    return User.findOne({ FBID: req.params.FBID })
-      .then((user) => {
-        res.send(user);
-      })
-      .catch((err) => {
-        console.error('error in getUser', err);
-        res.status(500).send(err);
+    User.findById(req.params._id)
+      .populate('events')
+      .exec((err, user) => {
+        if (err) {
+          console.error('error in getUser', parseErr(err));
+          res.status(500).send(parseErr(err));
+        } else {
+          res.send(user);
+        }
       });
   },
   createUser(req, res) {
-    User.findOne({ FBID: req.body.FBID })
-      .then((userAlreadyExists) => {
-        if (userAlreadyExists) {
-          res.send(userAlreadyExists);
-        } else {
-          const user = new User(req.body);
-          user.save()
-            .then((savedUser) => {
-              res.send(savedUser);
-            })
-            .catch((err) => {
-              console.error('error in createUser', err);
-              res.status(500).send(err);
-            });
-        }
+    User.update({ _id: req.body._id },
+      { $set: { name: req.body.name, _id: req.body._id } },
+      { new: true, upsert: true })
+      .then(() => {
+        res.send('successfully inserted or updated user');
+      })
+      .catch((err) => {
+        console.error('error creating user', parseErr(err));
+        res.status(500).send(parseErr(err));
       });
   },
 };

@@ -14,7 +14,8 @@ const User = require('./User');
 const EventSchema = new Schema({
   creator: {
     type: String,
-    required: [true, 'Creator is a required field. It should be their FBID'],
+    ref: 'User',
+    required: [true, "Creator is a required field. It should be the creator's facebook ID"],
   },
   description: { type: String },
   title: {
@@ -30,7 +31,7 @@ const EventSchema = new Schema({
     required: [true, 'A valid end time is required for each event'],
   },
   createdAt: { type: Date, expires: 60 * 60 * 24 * 2, default: Date.now },
-  attendees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  attendees: [{ type: String, ref: 'User' }],
   location: {
     lat: {
       type: String,
@@ -60,11 +61,9 @@ EventSchema.pre('validate', function (next) {
 });
 
 EventSchema.post('save', (event, next) => {
-  User.findOne({ FBID: event.creator })
-    .then((user) => {
-      user.events.push(event._id);
-      user.save().then(next);
-    })
+  User.findByIdAndUpdate(event.creator,
+    { $push: { events: event._id } })
+    .then(next)
     .catch((err) => {
       next(Error(err));
     });
