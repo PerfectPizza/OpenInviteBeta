@@ -1,12 +1,14 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import ViewRouter from './router.jsx';
 import store from './store';
+import ViewRouter from './router';
 
-render(
+const App = () => (
   <Provider store={store}>
     <ViewRouter />
-  </Provider>,
-  document.getElementById('app'),
+  </Provider>
 );
+
+ReactDOM.render(<App />, document.getElementById('app'));
+
