@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-const eventsReducer = (state = {}, { type, payload }) => {
+const eventsReducer = (state = { events: [] }, { type, payload }) => {
   switch (type) {
     case 'ADD EVENTS':
-      return { ...state, events: [...state.events, ...payload.events] };
+      return { ...state, events: [...state.events, ...payload] };
     case 'EDIT EVENT':
       return { ...state,
         events: [...state.events.filter(event => event._id !== payload._id), payload.event],

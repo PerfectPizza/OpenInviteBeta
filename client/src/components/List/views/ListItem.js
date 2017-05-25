@@ -1,6 +1,8 @@
+import React from 'react';
+
 import { Link } from 'react-router-dom';
 
-export default ({ event }) => (
+export default ({ event, deleteEvent }) => (
   <li key={event._id} className="collection-item">
     <span className="collection-item article-list">
       <Link to={`/event/${event._id}`}>{event.title}</Link>
@@ -9,7 +11,7 @@ export default ({ event }) => (
       </i>
       <i
         className="right material-icons small"
-        onClick={() => { this.props.deletePost(event._id) }}>
+        onClick={() => { deleteEvent(event._id) }}>
         delete
       </i>
     </span>

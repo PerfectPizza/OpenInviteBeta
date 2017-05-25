@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deleteEvent, addEvents } from './actions';
-import ListItem from './views';
+import ListItem from './views/ListItem';
 
 require('./styles.css');
 
@@ -13,18 +14,19 @@ class List extends Component {
     this.state = {
       events: [],
     };
-    this.user_id = user._id;
+    this.user_id = '987';
   }
 
   componentDidMount() {
     axios.get(`/api/user/${this.user_id}/event`)
-      .then((event) => {
-        this.props.addEvents(event);
+      .then(({ data: events }) => {
+        this.props.addEvents(events);
+        this.setState({ events: events });
       });
   }
 
   deleteEvent(_id) {
-    axios.delete(`/event/${_id}`)
+    axios.delete(`/api/event/${_id}`)
       .then(() => {
         this.props.deleteEvent(_id);
       })
@@ -36,15 +38,13 @@ class List extends Component {
   render() {
     return (
       <div>
-        <h1>List</h1>
         <ul className="collection">
-          <li>Hello world! list</li>
-          {this.state.events() &&
-            this.state.events().map(event =>
+          {this.state.events &&
+            this.state.events.map(event =>
               <ListItem
                 event={event}
-                deletePost={this.deletePost.bind(this)}
-              />
+                deleteEvent={(_id) => { this.deleteEvent.call(this, _id); }}
+              />,
             )}
         </ul>
       </div>
@@ -66,4 +66,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List));
