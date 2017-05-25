@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
-import reducers from './services/reducers';
+import ListReducers from './components/List/reducers';
 
 export default createStore(
-    reducers,
+  ListReducers,
 );
