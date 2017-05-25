@@ -16,7 +16,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use('/api/', router);
-app.use(express.static(path.join(__dirname, '../www')));
+app.use(express.static(`${__dirname}/client/public`));
+
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
   filename: 'bundle.js',
