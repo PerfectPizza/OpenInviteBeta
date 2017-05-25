@@ -1,1 +1,2 @@
-export default () => (<div>EventEditView</div>)
+import React from 'react'
+export default () => (<div>AddEdit</div>)

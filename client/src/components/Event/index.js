@@ -1,1 +1,3 @@
-export default () => (<div>EventFullView</div>)
+import React from 'react'
+
+export default () => (<div>Event</div>)
