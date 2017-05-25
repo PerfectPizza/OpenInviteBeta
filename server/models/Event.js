@@ -30,7 +30,7 @@ const EventSchema = new Schema({
     type: Date,
     required: [true, 'A valid end time is required for each event'],
   },
-  createdAt: { type: Date, expires: 60 * 60 * 24 * 2, default: Date.now },
+  createdAt: { type: Date, expires: 60 * 60 * 24, default: Date.now },
   attendees: [{ type: String, ref: 'User' }],
   location: {
     lat: {
@@ -52,9 +52,9 @@ EventSchema.pre('validate', function (next) {
   if (this.start_time < this.createdAt) {
     error += 'ERR: Start time cannot be in the past.\n';
   }
-  if (this.start_time > this.createdAt.addHours(48)
-    || this.end_time > this.createdAt.addHours(48)) {
-    error += 'ERR: Start and end time must be within 48 hours after the time of creation.\n';
+  if (this.start_time > this.createdAt.addHours(24)
+    || this.end_time > this.createdAt.addHours(24)) {
+    error += 'ERR: Start and end time must be within 24 hours after the time of creation.\n';
   }
   if (error.length) {
     next(Error(error));
