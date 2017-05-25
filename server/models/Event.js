@@ -47,11 +47,14 @@ const EventSchema = new Schema({
 EventSchema.pre('validate', function (next) {
   let error = '';
   if (this.start_time > this.end_time) {
-    error += 'End time must come after start time. ';
+    error += 'ERR: End time must come after start time.\n';
+  }
+  if (this.start_time < this.createdAt) {
+    error += 'ERR: Start time cannot be in the past.\n';
   }
   if (this.start_time > this.createdAt.addHours(48)
     || this.end_time > this.createdAt.addHours(48)) {
-    error += 'Start and end time must be within 48 hours after the time of creation. ';
+    error += 'ERR: Start and end time must be within 48 hours after the time of creation.\n';
   }
   if (error.length) {
     next(Error(error));

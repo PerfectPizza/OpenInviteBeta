@@ -13,6 +13,10 @@ const UserSchema = new Schema({
     ref: 'Event',
   }],
   name: { type: String, required: [true, 'a name is a required parameter for a user'] },
+  friends: [{
+    type: String,
+    ref: 'User',
+  }],
 });
 
 module.exports = mongoose.model('User', UserSchema);
