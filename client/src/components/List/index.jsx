@@ -45,6 +45,7 @@ class List extends Component {
           {this.state.events &&
             this.state.events.map(event =>
               <ListItem
+                key={event._id}
                 event={event}
                 deleteEvent={(_id) => { this.deleteEvent.call(this, _id); }}
               />,

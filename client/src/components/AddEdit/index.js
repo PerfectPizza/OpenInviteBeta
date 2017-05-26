@@ -12,18 +12,19 @@ class AddEdit extends Component {
   constructor({ event }) {
     super();
     this.state = {
-      title: '',
-      description: '',
-      start_time: '',
-      end_time: '',
-      longitude: '',
-      latitude: '',
-      creator: event.creator || '987',
+      title: event.title,
+      description: event.description,
+      start_time: event.start_time,
+      end_time: event.end_time,
+      longitude: event.location.longitude,
+      latitude: event.location.latitude,
+      creator: event.creator,
     };
     this.event_id = event._id;
+    console.log('id', event._id)
   }
 
-  updateOrCreate(e) {
+  addOrEdit(e) {
     e.preventDefault();
     let query;
     let action;
@@ -49,7 +50,7 @@ class AddEdit extends Component {
       <div className="row">
         <h3 className="center">{this.state.title ? `Edit ${this.state.title}` : 'Create an Event'}</h3>
         <div className="row">
-          <form className="col s12" onSubmit={this.updateOrCreate.bind(this)}>
+          <form className="col s12" onSubmit={this.addOrEdit.bind(this)}>
             <div className="row">
               <div className="col s4 input-field">
                 <input
@@ -91,10 +92,27 @@ AddEdit.propTypes = {
     creator: PropTypes.string.isRequired,
     start_time: PropTypes.string.isRequired,
     end_time: PropTypes.string.isRequired,
-    attendees: PropTypes.array.isRequired,
-  }).isRequired,
-  addEvent: PropTypes.func,
-  updateEvent: PropTypes.func,
+    attendees: PropTypes.arrayOf(PropTypes.string).isRequired,
+    location: PropTypes.objectOf(PropTypes.string),
+  }),
+  addEvent: PropTypes.func.isRequired,
+  updateEvent: PropTypes.func.isRequired,
+};
+
+AddEdit.defaultProps = {
+  event: {
+    title: '',
+    creator: '',
+    start_time: '',
+    end_time: '',
+    attendees: [],
+    location: {
+      latitude: '',
+      longitude: '',
+    },
+  },
+  addEvent,
+  updateEvent,
 };
 
 const mapStateToProps = ({ events }, { match }) => ({
@@ -110,4 +128,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Event));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddEdit));
