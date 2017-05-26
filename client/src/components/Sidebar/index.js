@@ -10,6 +10,7 @@ class Sidebar extends Component {
     $('.button-collapse').sideNav({
       menuWidth: 200,
       draggable: true,
+      closeOnClick: true,
     });
   }
 

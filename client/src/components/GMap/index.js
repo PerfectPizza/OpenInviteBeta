@@ -25,7 +25,7 @@ class GMap extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main">
         <ul className="collection">
           {this.state.events && this.state.events.map(event => <li>{event.title}</li>)}
         </ul>

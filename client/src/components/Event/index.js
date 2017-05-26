@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 const Event = ({ event }) => {
   const { title, start_time: startTime, end_time: endTime, attendees } = event;
   return (
-    <div>
+    <div className="main">
       <h2>{title}</h2>
       <Link to={`/edit/${event._id}`}>
         <span className="btn-floating btn-large waves-effect waves-light right">
