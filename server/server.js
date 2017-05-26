@@ -18,10 +18,7 @@ app.use(bodyParser.json());
 app.use('/api/', router);
 app.use(express.static(path.join(__dirname, '../client/public')));
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html');
-});
-
+// >>>>>>>TAKE OUT DURING PRODUCTION>>>>>>>>>
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
   filename: 'bundle.js',
@@ -31,6 +28,7 @@ app.use(webpackDevMiddleware(compiler, {
   },
   historyApiFallback: true,
 }));
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 const server = app.listen(3000, () => {
   const host = server.address().address;

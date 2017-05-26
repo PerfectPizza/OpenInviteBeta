@@ -4,11 +4,57 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"> 
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+  <link rel="stylesheet" href="loading.css" />
 </head>
 <body>
-  <div id="app"></div>
+  <div id="fb-root"></div>
+  <div class="loader"></div>
+  <h1 id="loadText">Loading...</h1>
+  <div id="response"></div>
+  <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+  <script id="facebook-jssdk" src="//connect.facebook.net/en_US/sdk.js"></script>
+  <script>
+  /* global FB */
+  // initialize connection to FB app
+    FB.init({
+      appId: '1128845777235850',
+      cookie: true,
+      xfbml: true,
+      version: 'v2.8',
+    });
 
-  <script src="bundle.js" ></script>
-  <!--Materialize Scripts and Plugin Initialization-->
+    function getFriends() {
+      FB.api('/me/friends', (response) => {
+        console.log(response.data);
+      });
+    }
+
+    FB.getLoginStatus((response) => {
+      document.querySelector('.loader').style.display = 'none';
+      if (response.status === 'connected') {
+        // user is authorized
+        document.querySelector('#loadText').innerText = 'Logged in!';
+        document.querySelector('.fb-login-button').style.display = 'none';
+        getFriends();
+      } else {
+        // user is not authorized
+        document.querySelector('.fb-login-button').style.display = 'block';
+        document.querySelector('#loadText').innerText = 'Oh no!\n\nIt looks like you neeed to log in before you can hang with us!';
+      }
+    });
+
+    document.querySelector('.fb-login-button').addEventListener('click', () => {
+      // do the login
+      FB.login((response) => {
+        if (response.authResponse) {
+          // user just authorized your app
+          document.querySelector('.fb-login-button').style.display = 'none';
+          getFriends();
+        }
+      }, { scope: 'email,public_profile', return_scopes: true });
+    }, false);
+  </script>
+  <div id="app"></div>
+  <script src="/bundle.js" ></script> 
 </body>
 </html>
