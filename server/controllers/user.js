@@ -4,7 +4,14 @@ const { parseErr } = require('./util');
 module.exports = {
   getAllUsers(req, res) {
     User.find({})
-      .populate('events')
+      .populate({
+        path: 'events',
+        populate: { path: 'attendees' },
+      })
+      .populate({
+        path: 'friends',
+        populate: { path: 'events' },
+      })
       .exec((err, users) => {
         if (err) {
           console.error('error in getAllUsers', parseErr(err));
@@ -16,7 +23,14 @@ module.exports = {
   },
   getUser(req, res) {
     User.findById(req.params._id)
-      .populate('events')
+      .populate({
+        path: 'events',
+        populate: { path: 'attendees' },
+      })
+      .populate({
+        path: 'friends',
+        populate: { path: 'events' },
+      })
       .exec((err, user) => {
         if (err) {
           console.error('error in getUser', parseErr(err));
@@ -28,7 +42,7 @@ module.exports = {
   },
   createUser(req, res) {
     User.update({ _id: req.body._id },
-      { $set: { name: req.body.name, _id: req.body._id } },
+      { $set: { name: req.body.name, _id: req.body._id, friends: req.body.friends } },
       { new: true, upsert: true })
       .then(() => {
         res.send('successfully inserted or updated user');

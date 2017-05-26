@@ -1,21 +1,19 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  browserHistory, // might be able to take out (not sure yet)
-  Route,
-} from 'react-router-dom';
-import {
-  EventsDashView,
-  EventEditView,
-  EventFullView,
-} from './views';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-// May be able to take out browserHistory (not sure yet)
+import Sidebar from './components/Sidebar';
+import List from './components/List';
+import GMap from './components/GMap';
+import AddEdit from './components/AddEdit';
+
 const ViewRouter = () => (
-  <Router history={browserHistory}>
-    <Route path="/" component={EventsDashView} />
-    <Route path="/edit" component={EventEditView} />
-    <Route path="/event" component={EventFullView} />
+  <Router>
+    <div>
+      <Route path="/" component={Sidebar} />
+      <Route path="/map" component={GMap} />
+      <Route path="/list" component={List} />
+      <Route path="/edit:event_id?" component={AddEdit} />
+    </div>
   </Router>
 );
 

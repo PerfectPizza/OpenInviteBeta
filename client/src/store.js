@@ -1,6 +1,11 @@
-import { createStore } from 'redux';
-import reducers from './services/reducers';
+import { createStore, combineReducers } from 'redux';
+import ListReducers from './components/List/reducers';
 
-export default createStore(
-    reducers,
+const combinedReducers = combineReducers({ ListReducers });
+
+const store = createStore(
+  combinedReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
+
+export default store;

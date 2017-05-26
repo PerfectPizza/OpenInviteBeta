@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon server/server.js",
-    "build": "webpack",
+    "build": "webpack -w",
     "test": "NODE_ENV=test mocha",
     "lint": "node_modules/.bin/eslint ."
   },
@@ -19,16 +19,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.16.1",
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
-    "mongoose": "^4.10.2",
     "load-google-maps-api": "^1.0.0",
+    "mongoose": "^4.10.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "webpack-dev-middleware": "^1.10.2"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -36,6 +38,7 @@
     "babel-loader": "^7.0.0",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.2",
     "enzyme": "^2.8.2",
     "eslint": "^3.19.0",
@@ -45,8 +48,7 @@
     "eslint-plugin-react": "^6.10.3",
     "react-test-renderer": "^15.5.4",
     "style-loader": "^0.18.1",
-    "webpack": "^2.6.0",
-    "webpack-dev-middleware": "^1.10.2"
+    "webpack": "^2.6.0"
   },
   "eslintConfig": {
     "env": {

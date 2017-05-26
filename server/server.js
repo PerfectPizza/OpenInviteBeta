@@ -4,19 +4,23 @@ require('dotenv').config({ path: '/config/' });
 require('./config/db');
 
 const express = require('express');
-const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.config.js');
+const webpackDevMiddleware = require('webpack-dev-middleware'); // TAKE OUT IN PRODUCTION
 const path = require('path');
 const router = require('./router.js');
 const bodyParser = require('body-parser');
 
-const compiler = webpack(webpackConfig);
+const compiler = webpack(webpackConfig); // TAKE OUT IN PRODUCTION
 const app = express();
 
 app.use(bodyParser.json());
 app.use('/api/', router);
-app.use(express.static(`${__dirname}/client/public`));
+app.use(express.static(path.join(__dirname, '../client/public')));
+
+app.get('/', (req, res) => {
+  res.sendFile('index.html');
+});
 
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
