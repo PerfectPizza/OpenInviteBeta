@@ -66,7 +66,7 @@ EventSchema.pre('validate', function (next) {
 EventSchema.post('save', (event, next) => {
   User.findByIdAndUpdate(event.creator,
     { $push: { events: event._id } })
-    .then(next)
+    .then(() => { next(); })
     .catch((err) => {
       next(Error(err));
     });

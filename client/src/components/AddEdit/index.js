@@ -14,34 +14,28 @@ class AddEdit extends Component {
     this.state = {
       title: event.title,
       description: event.description,
-      start_time: event.start_time,
-      end_time: event.end_time,
-      longitude: event.location.longitude,
-      latitude: event.location.latitude,
-      creator: event.creator,
+      start_time: event.start_time || new Date(new Date()).setHours(new Date().getHours() + 3),
+      end_time: event.end_time || new Date(new Date()).setHours(new Date().getHours() + 5),
+      location: {
+        lng: event.location.longitude || '123',
+        lat: event.location.latitude || '456',
+      },
+      creator: event.creator || '987',
     };
-    this.event_id = event._id;
-    console.log('id', event._id)
   }
 
   addOrEdit(e) {
     e.preventDefault();
-    let query;
-    let action;
-    if (this.event_id) {
-      query = axios.put(`/api/event/${this.event_id}`, this.state);
-      action = this.props.addEvent;
-    } else {
-      query = axios.post('/api/event', this.state);
-      action = this.props.updateEvent;
-    }
+    const query = this.props.event._id
+    ? axios.put(`/api/event/${this.props.event._id}`, this.state)
+    : axios.post('/api/event', this.state);
     query
       .then(() => {
-        this.props[action](this.state);
-        this.history.push('/list');
+        // No need to dispatch here because the list component will retrieve uptodate events
+        this.props.history.push('/list');
       })
       .catch(() => {
-        alert('There was a problem saving this event');
+        alert('There was an unfamiliar error saving the event. Please try again later');
       });
   }
 
@@ -56,12 +50,13 @@ class AddEdit extends Component {
                 <div className="col s4 input-field">
                   <input
                     className="input-list"
-                    id="title-mutate"
+                    id="title-AddEdit"
                     value={this.state.title}
                     onChange={e => this.setState({ title: e.target.value })}
                   />
-                  <label className="active label-list" htmlFor="title-mutate">Title:</label>
+                  <label className="active label-list" htmlFor="title-AddEdit">Title:</label>
                 </div>
+                <div className="col s8 input-field">MAP</div>
                 <button className="btn waves-effect waves-light right" type="submit">Submit
                   <i className="material-icons right">send</i>
                 </button>
@@ -70,14 +65,42 @@ class AddEdit extends Component {
                 <div className="col s4 input-field">
                   <textarea
                     className="input-list"
-                    id="description-mutate"
+                    id="description-AddEdit"
                     onChange={e => this.setState({ description: e.target.value })}
+                    value={this.state.description}
+                  />
+                  <label
+                    className="label-list active"
+                    htmlFor="description-AddEdit"
+                  >Description</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col s4 input-field">
+                  <input
+                    className="input-list"
+                    id="start_time-AddEdit"
+                    onChange={e => this.setState({ start_time: e.target.value })}
                     value={this.state.content}
                   />
                   <label
                     className="active label-list"
-                    htmlFor="description-mutate"
-                  >Description</label>
+                    htmlFor="start_time-AddEdit"
+                  >start time</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col s4 input-field">
+                  <input
+                    className="input-list"
+                    id="end_time-AddEdit"
+                    onChange={e => this.setState({ start_time: e.target.value })}
+                    value={this.state.content}
+                  />
+                  <label
+                    className="active label-list"
+                    htmlFor="end_time-AddEdit"
+                  >end time</label>
                 </div>
               </div>
             </form>
@@ -96,9 +119,9 @@ AddEdit.propTypes = {
     end_time: PropTypes.string.isRequired,
     attendees: PropTypes.arrayOf(PropTypes.string).isRequired,
     location: PropTypes.objectOf(PropTypes.string),
+    _id: PropTypes.string.isRequired,
   }),
-  addEvent: PropTypes.func.isRequired,
-  updateEvent: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 AddEdit.defaultProps = {
@@ -113,21 +136,10 @@ AddEdit.defaultProps = {
       longitude: '',
     },
   },
-  addEvent,
-  updateEvent,
 };
 
 const mapStateToProps = ({ events }, { match }) => ({
   event: events.find(event => event._id === match.params.event_id),
 });
 
-const mapDispatchToProps = dispatch => ({
-  addEvent: (_id) => {
-    dispatch(addEvent(_id));
-  },
-  updateEvent: (event) => {
-    dispatch(updateEvent(event));
-  },
-});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddEdit));
+export default withRouter(connect(mapStateToProps)(AddEdit));
