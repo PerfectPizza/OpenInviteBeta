@@ -11,4 +11,10 @@ module.exports = {
       payload: events,
     };
   },
+  updateEvent(event) {
+    return {
+      type: 'UPDATE EVENT',
+      payload: event,
+    };
+  },
 };

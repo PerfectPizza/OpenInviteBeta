@@ -1,7 +1,7 @@
 import { createStore, combineReducers } from 'redux';
-import ListReducers from './components/List/reducers';
+import events from './reducers/events';
 
-const combinedReducers = combineReducers({ ListReducers });
+const combinedReducers = combineReducers({ events });
 
 const store = createStore(
   combinedReducers,

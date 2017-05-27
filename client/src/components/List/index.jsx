@@ -2,26 +2,26 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { deleteEvent, addEvents } from './actions';
+import PropTypes from 'prop-types';
+import { deleteEvent, addEvents } from '../actions/events';
 import ListItem from './views/ListItem';
 
 require('./styles.css');
 
 class List extends Component {
   constructor({ user }) {
-    console.log('hello world!');
     super();
     this.state = {
       events: [],
     };
-    this.user_id = '987';
+    this.user_id = user ? user._id : '987';
   }
 
   componentDidMount() {
     axios.get(`/api/user/${this.user_id}/event`)
       .then(({ data: events }) => {
         this.props.addEvents(events);
-        this.setState({ events: events });
+        this.setState({ events });
       });
   }
 
@@ -29,6 +29,9 @@ class List extends Component {
     axios.delete(`/api/event/${_id}`)
       .then(() => {
         this.props.deleteEvent(_id);
+        this.setState({
+          events: this.state.events.filter(event => event._id !== _id),
+        });
       })
       .catch(() => {
         alert('There was a problem deleting the event');
@@ -37,11 +40,12 @@ class List extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main">
         <ul className="collection">
           {this.state.events &&
             this.state.events.map(event =>
               <ListItem
+                key={event._id}
                 event={event}
                 deleteEvent={(_id) => { this.deleteEvent.call(this, _id); }}
               />,
@@ -52,10 +56,7 @@ class List extends Component {
   }
 }
 
-const mapStateToProps = ({ user, events }) => ({
-  user,
-  events,
-});
+const mapStateToProps = ({ user }) => ({ user });
 
 const mapDispatchToProps = dispatch => ({
   deleteEvent: (_id) => {
@@ -65,5 +66,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addEvents(events));
   },
 });
+
+List.PropTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    events: PropTypes.array.isRequired,
+    friends: PropTypes.array.isRequired,
+  }),
+  deleteEvent: PropTypes.func,
+  addEvents: PropTypes.func,
+};
+
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List));

@@ -5,8 +5,8 @@ module.exports = {
   createEvent(req, res) {
     const event = new Event(req.body);
     event.save()
-      .then(() => {
-        res.send('successfully created an event');
+      .then((savedEvent) => {
+        res.send(savedEvent);
       })
       .catch((err) => {
         console.error('error creating event', parseErr(err));
