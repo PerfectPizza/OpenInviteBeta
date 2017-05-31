@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { updateEvent, addEvent } from '../actions';
 
 require('./styles.css');
 
@@ -20,7 +19,6 @@ class AddEdit extends Component {
         lng: event.location.longitude || '123',
         lat: event.location.latitude || '456',
       },
-      creator: event.creator || '987',
     };
   }
 

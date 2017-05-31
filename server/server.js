@@ -1,24 +1,31 @@
 /* eslint no-unused-vars: "warn" */
 
-require('dotenv').config({ path: '/config/' });
+require('dotenv').config();
 require('./config/db');
 
 const express = require('express');
-const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
-const webpackDevMiddleware = require('webpack-dev-middleware'); // TAKE OUT IN PRODUCTION
-const path = require('path');
-const router = require('./router.js');
+const session = require('./config/session');
 const bodyParser = require('body-parser');
+const addPassportMiddleware = require('./config/passport');
+const apiRouter = require('./router/apiRouter.js');
+const authRouter = require('./router/authRouter.js');
+const path = require('path');
+const webpack = require('webpack'); // START TAKE OUT IN PRODUCTION
+const webpackConfig = require('../webpack.config.js');
+const webpackDevMiddleware = require('webpack-dev-middleware');
 
-const compiler = webpack(webpackConfig); // TAKE OUT IN PRODUCTION
+const compiler = webpack(webpackConfig); // END TAKE OUT IN PRODUCTION
+
 const app = express();
 
+app.use(session);
 app.use(bodyParser.json());
-app.use('/api/', router);
+addPassportMiddleware(app);
+app.use('/api/', apiRouter);
+app.use('/login', authRouter);
 app.use(express.static(path.join(__dirname, '../client/public')));
 
-// >>>>>>>TAKE OUT DURING PRODUCTION>>>>>>>>>
+// START TAKE OUT DURING PRODUCTION
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
   filename: 'bundle.js',
@@ -28,10 +35,8 @@ app.use(webpackDevMiddleware(compiler, {
   },
   historyApiFallback: true,
 }));
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+// END TAKE OUT DURING PRODUCTION
 
-const server = app.listen(3000, () => {
-  const host = server.address().address;
-  const port = server.address().port;
-  console.log(`App listening at http://${host}:${port}`);
+app.listen(process.env.port || 3000, () => {
+  console.log(`app listening on ${process.env.port || '3000'}`);
 });

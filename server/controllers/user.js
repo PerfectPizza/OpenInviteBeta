@@ -22,7 +22,7 @@ module.exports = {
       });
   },
   getUser(req, res) {
-    User.findById(req.params._id)
+    User.findById(req.user._id)
       .populate({
         path: 'events',
         populate: { path: 'attendees' },

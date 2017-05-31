@@ -3,7 +3,7 @@ const { parseErr } = require('./util');
 
 module.exports = {
   createEvent(req, res) {
-    const event = new Event(req.body);
+    const event = new Event({ ...req.body, creator: req.user._id });
     event.save()
       .then((savedEvent) => {
         res.send(savedEvent);
@@ -48,7 +48,7 @@ module.exports = {
       });
   },
   getEventsByUserId(req, res) {
-    Event.find({ creator: req.params._id })
+    Event.find({ creator: req.user._id })
       .populate('attendees', '_id name')
       .exec((err, events) => {
         if (err) {
