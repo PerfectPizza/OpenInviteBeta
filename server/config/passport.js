@@ -22,7 +22,6 @@ module.exports = (app) => {
   });
 
   passport.deserializeUser((obj, cb) => {
-    console.log(cb)
     cb(null, obj);
   });
 

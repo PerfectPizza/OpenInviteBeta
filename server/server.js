@@ -7,8 +7,7 @@ const express = require('express');
 const session = require('./config/session');
 const bodyParser = require('body-parser');
 const addPassportMiddleware = require('./config/passport');
-const apiRouter = require('./router/apiRouter.js');
-const authRouter = require('./router/authRouter.js');
+const { apiRouter, authRouter, baseRouter } = require('./routers');
 const path = require('path');
 const webpack = require('webpack'); // START TAKE OUT IN PRODUCTION
 const webpackConfig = require('../webpack.config.js');
@@ -21,6 +20,7 @@ const app = express();
 app.use(session);
 app.use(bodyParser.json());
 addPassportMiddleware(app);
+app.use('/', baseRouter);
 app.use('/api/', apiRouter);
 app.use('/login', authRouter);
 app.use(express.static(path.join(__dirname, '../client/public')));
