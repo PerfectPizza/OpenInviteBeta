@@ -1,5 +1,5 @@
 const passport = require('passport');
-const facebookConfig = require('./facebook');
+const addFacebookStrategy = require('./facebook/strategy');
 // Configure Passport authenticated session persistence.
 //
 // In order to restore authentication state across HTTP requests, Passport needs
@@ -25,5 +25,5 @@ module.exports = (app) => {
     cb(null, obj);
   });
 
-  facebookConfig();
+  addFacebookStrategy();
 };
