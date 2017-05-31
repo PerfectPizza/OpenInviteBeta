@@ -30,6 +30,7 @@
     "express-session": "^1.15.3",
     "load-google-maps-api": "^1.0.0",
     "mongoose": "^4.10.2",
+    "oauth": "^0.9.15",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "prop-types": "^15.5.10",
