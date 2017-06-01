@@ -50,6 +50,7 @@ EventSchema.pre('validate', function (next) {
     error += 'ERR: End time must come after start time.\n';
   }
   if (this.start_time < this.createdAt) {
+    console.log('st, ca', this.start_time, this.createdAt)
     error += 'ERR: Start time cannot be in the past.\n';
   }
   if (this.start_time > this.createdAt.addHours(24)

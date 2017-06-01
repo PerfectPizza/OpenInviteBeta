@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import moment from 'moment-timezone';
+import { localToUTC, UTCToLocal } from '../util';
 
 require('./styles.css');
 
@@ -13,8 +15,8 @@ class AddEdit extends Component {
     this.state = {
       title: event.title,
       description: event.description,
-      start_time: event.start_time || new Date(new Date()).setHours(new Date().getHours() + 3),
-      end_time: event.end_time || new Date(new Date()).setHours(new Date().getHours() + 5),
+      start_time: event.start_time,
+      end_time: event.end_time,
       location: {
         lng: event.location.longitude || '123',
         lat: event.location.latitude || '456',
@@ -23,7 +25,6 @@ class AddEdit extends Component {
   }
 
   addOrEdit(e) {
-    e.preventDefault();
     const query = this.props.event._id
     ? axios.put(`/api/event/${this.props.event._id}`, this.state)
     : axios.post('/api/event', this.state);
@@ -37,13 +38,41 @@ class AddEdit extends Component {
       });
   }
 
+  validateForm(e) {
+    e.preventDefault();
+    let err = '';
+    const title = this.state.title;
+    const startTime = moment.utc(this.state.start_time);
+    const endTime = moment.utc(this.state.end_time);
+    console.log('tse', title, startTime, endTime, moment.utc().format());
+    const oneDayLater = moment.utc().add(24, 'hours');
+    const now = moment.utc();
+    if (title.length === 0) {
+      err += 'A title is required for every event.\n';
+    }
+    if (endTime.isBefore(startTime)) {
+      err += 'The start time must be before the end time.\n';
+    }
+    if (endTime.isBefore(now) || startTime.isBefore(now)) {
+      err += 'The start time and end times cannot be in the past.\n';
+    }
+    if (moment(endTime).isAfter(oneDayLater) || moment(startTime).isAfter(oneDayLater)) {
+      err += 'The event must start and end within 24 hours of its creation\n';
+    }
+    if (err.length) {
+      alert(err);
+      return;
+    }
+    this.addOrEdit();
+  }
+
   render() {
     return (
       <div className="main">
         <div className="row">
           <h3 className="center">{this.state.title ? `Edit ${this.state.title}` : 'Create an Event'}</h3>
           <div className="row">
-            <form className="col s12" onSubmit={this.addOrEdit.bind(this)}>
+            <form className="col s12" onSubmit={this.validateForm.bind(this)}>
               <div className="row">
                 <div className="col s4 input-field">
                   <input
@@ -78,8 +107,9 @@ class AddEdit extends Component {
                   <input
                     className="input-list"
                     id="start_time-AddEdit"
-                    onChange={e => this.setState({ start_time: e.target.value })}
-                    value={this.state.content}
+                    onChange={e => this.setState({ start_time: localToUTC(e.target.value) })}
+                    type="datetime-local"
+                    value={UTCToLocal(this.state.start_time)}
                   />
                   <label
                     className="active label-list"
@@ -92,8 +122,9 @@ class AddEdit extends Component {
                   <input
                     className="input-list"
                     id="end_time-AddEdit"
-                    onChange={e => this.setState({ start_time: e.target.value })}
-                    value={this.state.content}
+                    onChange={e => this.setState({ end_time: localToUTC(e.target.value) })}
+                    type="datetime-local"
+                    value={UTCToLocal(this.state.end_time)}
                   />
                   <label
                     className="active label-list"
@@ -117,7 +148,7 @@ AddEdit.propTypes = {
     end_time: PropTypes.string.isRequired,
     attendees: PropTypes.arrayOf(PropTypes.string).isRequired,
     location: PropTypes.objectOf(PropTypes.string),
-    _id: PropTypes.string.isRequired,
+    _id: PropTypes.string,
   }),
   history: PropTypes.object.isRequired,
 };
