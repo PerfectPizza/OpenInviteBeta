@@ -70,10 +70,10 @@ class AddEdit extends Component {
       <div className="main">
         <div className="row">
           <h3 className="center">{this.state.title ? `Edit ${this.state.title}` : 'Create an Event'}</h3>
-          <div className="row">
-            <form className="col s12" onSubmit={this.validateForm.bind(this)}>
+          <hr />
+            <form className="col s9" onSubmit={this.validateForm.bind(this)}>
               <div className="row">
-                <div className="col s4 input-field">
+                <div className="col s3 input-field">
                   <input
                     className="input-list"
                     id="title-AddEdit"
@@ -82,13 +82,13 @@ class AddEdit extends Component {
                   />
                   <label className="active label-list" htmlFor="title-AddEdit">Title:</label>
                 </div>
-                <div className="col s8 input-field">MAP</div>
+                <div className="col s6 input-field">MAP</div>
                 <button className="btn waves-effect waves-light right" type="submit">Submit
                   <i className="material-icons right">send</i>
                 </button>
               </div>
               <div className="row">
-                <div className="col s4 input-field">
+                <div className="col s3 input-field">
                   <textarea
                     className="input-list"
                     id="description-AddEdit"
@@ -102,7 +102,7 @@ class AddEdit extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col s4 input-field">
+                <div className="col s3 input-field">
                   <input
                     className="input-list"
                     id="start_time-AddEdit"
@@ -117,7 +117,7 @@ class AddEdit extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col s4 input-field">
+                <div className="col s3 input-field">
                   <input
                     className="input-list"
                     id="end_time-AddEdit"
@@ -132,7 +132,6 @@ class AddEdit extends Component {
                 </div>
               </div>
             </form>
-          </div>
         </div>
       </div>
     );

@@ -39,7 +39,7 @@ class List extends Component {
 
   render() {
     return (
-      <div className="main">
+      <div>
         <ul className="collection">
           {this.state.events &&
             this.state.events.map(event =>

@@ -1,4 +1,3 @@
-/* global $ */
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -11,11 +10,23 @@ require('./styles.css');
 class Sidebar extends Component {
 
   componentDidMount() {
-    $('.button-collapse').sideNav({
-      menuWidth: 200,
-      draggable: true,
-      closeOnClick: true,
-    });
+    let showing = false;
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementsByClassName('toggle')[0];
+    console.log(sidebar, toggle)
+    function show() {
+      if (!showing) {
+        sidebar.classList.add('active');
+        toggle.classList.remove('active');
+        showing = true;
+      } else {
+        sidebar.classList.remove('active');
+        toggle.classList.add('active');
+        showing = false;
+      }
+    }
+    toggle.addEventListener('click', show);
+    sidebar.addEventListener('click', show);
 
     axios.get('/me')
       .then(({ data: user }) => {
@@ -26,7 +37,10 @@ class Sidebar extends Component {
   render() {
     return (
       <div>
-        <ul id="slide-out" className="side-nav fixed">
+        <a className="button-collapse toggle active">
+          <i className="material-icons">menu</i>
+        </a>
+        <ul className="align-left slide-in" id="sidebar">
           <li><div className="userView">
             <Link to="/list">
               {this.props.user && <img alt="user" className="circle" src={this.props.user.picture} />}
@@ -39,9 +53,6 @@ class Sidebar extends Component {
           <hr />
           <li><Link to="/edit"><i className="material-icons large">add</i></Link></li>
         </ul>
-        <a data-activates="slide-out" className="button-collapse">
-          <i className="material-icons">menu</i>
-        </a>
       </div>
     );
   }
