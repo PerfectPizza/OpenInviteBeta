@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: "warn" */
 
-require('dotenv').config();
+require('dotenv').config({ path: 'server/config/.env' });
 require('./config/db');
 
 const express = require('express');
@@ -10,7 +10,7 @@ const addPassportMiddleware = require('./config/passport');
 const { apiRouter, authRouter, baseRouter } = require('./routers');
 const path = require('path');
 const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
+const webpackConfig = require('./config/webpack.config.js');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 
 const compiler = webpack(webpackConfig);

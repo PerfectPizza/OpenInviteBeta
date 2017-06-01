@@ -1,4 +1,4 @@
 node_modules
 .DS_Store
-.env
+server/config/.env
 client/public/bundle.js
