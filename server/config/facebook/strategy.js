@@ -1,7 +1,7 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
 const User = require('../../models/User');
-const { getFriends } = require('./services');
+const { getUserData } = require('./services');
 
 module.exports = () => {
   passport.use(new Strategy({
@@ -10,9 +10,9 @@ module.exports = () => {
     callbackURL: 'http://localhost:3000/login/facebook/return',
   },
   (accessToken, refreshToken, { id: _id, displayName: name }, cb) => {
-    getFriends(accessToken)
-      .then((friends) => {
-        User.findOneAndUpdate({ _id }, { name, accessToken, friends }, { new: true, upsert: true })
+    getUserData(accessToken)
+      .then(({ friends, picture }) => {
+        User.findOneAndUpdate({ _id }, { name, accessToken, friends, picture }, { new: true, upsert: true })
           .populate({
             path: 'events',
             populate: { path: 'attendees' },
@@ -23,6 +23,7 @@ module.exports = () => {
           })
           .exec()
           .then((user) => {
+            console.log('user', user)
             cb(null, user);
           })
           .catch((error) => {

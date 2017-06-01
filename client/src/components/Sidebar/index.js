@@ -1,6 +1,10 @@
 /* global $ */
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import axios from 'axios';
+import { storeUser } from '../actions/user';
 
 require('./styles.css');
 
@@ -12,6 +16,11 @@ class Sidebar extends Component {
       draggable: true,
       closeOnClick: true,
     });
+
+    axios.get('/me')
+      .then(({ data: user }) => {
+        this.props.storeUser(user);
+      });
   }
 
   render() {
@@ -20,7 +29,7 @@ class Sidebar extends Component {
         <ul id="slide-out" className="side-nav fixed">
           <li><div className="userView">
             <Link to="/list">
-              <img alt="user" className="circle" src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/1/005/00c/19b/270823d.jpg" />
+              {this.props.user && <img alt="user" className="circle" src={this.props.user.picture} />}
             </Link>
           </div></li>
           <hr />
@@ -38,4 +47,12 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar;
+const mapStateToProps = ({ user }) => ({ user });
+
+const mapDispatchToProps = dispatch => ({
+  storeUser: (user) => {
+    dispatch(storeUser(user));
+  },
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));
