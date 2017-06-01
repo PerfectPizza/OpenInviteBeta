@@ -3,7 +3,7 @@ const path = require('path');
 
 function authCheck(req, res, next) {
   if (req.isAuthenticated()) next();
-  else res.redirect('/auth');  // not authenticated
+  else res.redirect('/auth');
 }
 
 router.get('/', authCheck, (req, res) => {
