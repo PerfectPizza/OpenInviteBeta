@@ -23,7 +23,6 @@ module.exports = () => {
           })
           .exec()
           .then((user) => {
-            console.log('user', user)
             cb(null, user);
           })
           .catch((error) => {

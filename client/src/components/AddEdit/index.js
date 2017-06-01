@@ -24,7 +24,7 @@ class AddEdit extends Component {
     };
   }
 
-  addOrEdit(e) {
+  addOrEdit() {
     const query = this.props.event._id
     ? axios.put(`/api/event/${this.props.event._id}`, this.state)
     : axios.post('/api/event', this.state);
@@ -44,7 +44,6 @@ class AddEdit extends Component {
     const title = this.state.title;
     const startTime = moment.utc(this.state.start_time);
     const endTime = moment.utc(this.state.end_time);
-    console.log('tse', title, startTime, endTime, moment.utc().format());
     const oneDayLater = moment.utc().add(24, 'hours');
     const now = moment.utc();
     if (title.length === 0) {
