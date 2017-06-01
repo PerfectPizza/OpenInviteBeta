@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon server/server.js --exec babel-node --presets es2015,stage-1",
-    "build": "webpack --progress --colors --watch",
+    "build": "webpack --config server/config/webpack.config.js --progress --colors --watch",
     "test": "NODE_ENV=test mocha",
     "lint": "node_modules/.bin/eslint ."
   },
