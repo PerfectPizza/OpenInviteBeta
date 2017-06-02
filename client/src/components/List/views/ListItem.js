@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
-const ListItem = ({ event, deleteEvent }) => (
+const ListItem = ({ event, deleteEvent, user_id }) => (
   <li key={event._id} className="collection-item">
     <span className="collection-item article-list">
       <Link to={`/event/${event._id}`}>{event.title}</Link>
-      <i className="right material-icons small">
+      {event.creator === user_id &&
+      <span>
+        <i className="right material-icons small">
         <Link to={`/edit/${event._id}`}>mode_edit</Link>
-      </i>
-      <i className="right material-icons small" onClick={() => { deleteEvent(event._id); }}>
-        delete
-      </i>
+        </i>
+        <i className="right material-icons small" onClick={() => { deleteEvent(event._id); }}>
+          delete
+        </i>
+      </span>}
     </span>
   </li>
 );
@@ -25,7 +28,8 @@ ListItem.propTypes = {
     end_time: PropTypes.string.isRequired,
     attendees: PropTypes.array.isRequired,
   }).isRequired,
-  deleteEvent: PropTypes.func,
+  deleteEvent: PropTypes.func.isRequired,
+  user_id: PropTypes.string.isRequired,
 };
 
 export default ListItem;

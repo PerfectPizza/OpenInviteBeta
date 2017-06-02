@@ -17,6 +17,8 @@ const UserSchema = new Schema({
     type: String,
     ref: 'User',
   }],
+  accessToken: String,
+  picture: String,
 });
 
 module.exports = mongoose.model('User', UserSchema);

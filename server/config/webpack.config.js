@@ -1,12 +1,12 @@
 const path = require('path');
 
 module.exports = {
-  context: `${__dirname}/client/src`,
+  context: `${__dirname}/../../client/src`,
 
   entry: './index.jsx',
 
   output: {
-    path: `${__dirname}/client/public`,
+    path: `${__dirname}/../../client/public`,
     filename: 'bundle.js',
   },
 
@@ -15,9 +15,16 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-        ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['latest', { modules: false }],
+              'react',
+              'stage-1',
+            ],
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -27,7 +34,7 @@ module.exports = {
   },
   resolve: {
     modules: [
-      path.join(__dirname, 'node_modules'),
+      path.join(__dirname, '../../node_modules'),
     ],
     extensions: ['.js', '.jsx'],
   },

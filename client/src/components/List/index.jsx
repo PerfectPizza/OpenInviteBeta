@@ -9,19 +9,18 @@ import ListItem from './views/ListItem';
 require('./styles.css');
 
 class List extends Component {
-  constructor({ user }) {
+  constructor() {
     super();
     this.state = {
       events: [],
     };
-    this.user_id = user ? user._id : '987';
   }
 
   componentDidMount() {
-    axios.get(`/api/user/${this.user_id}/event`)
+    axios.get('/api/event/')
       .then(({ data: events }) => {
         this.props.addEvents(events);
-        this.setState({ events });
+        this.setState({ events: [...this.state.events, ...events] });
       });
   }
 
@@ -48,6 +47,7 @@ class List extends Component {
                 key={event._id}
                 event={event}
                 deleteEvent={(_id) => { this.deleteEvent.call(this, _id); }}
+                user_id={this.props.user._id}
               />,
             )}
         </ul>
@@ -73,9 +73,9 @@ List.PropTypes = {
     _id: PropTypes.string.isRequired,
     events: PropTypes.array.isRequired,
     friends: PropTypes.array.isRequired,
-  }),
-  deleteEvent: PropTypes.func,
-  addEvents: PropTypes.func,
+  }).isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+  addEvents: PropTypes.func.isRequired,
 };
 
 

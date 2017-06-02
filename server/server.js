@@ -1,37 +1,44 @@
 /* eslint no-unused-vars: "warn" */
 
-require('dotenv').config({ path: '/config/' });
+require('dotenv').config({ path: 'server/config/.env' });
 require('./config/db');
 
 const express = require('express');
-const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
-const webpackDevMiddleware = require('webpack-dev-middleware'); // TAKE OUT IN PRODUCTION
-const path = require('path');
-const router = require('./router.js');
+const session = require('./config/session');
 const bodyParser = require('body-parser');
+const addPassportMiddleware = require('./config/passport');
+const { apiRouter, authRouter, baseRouter } = require('./routers');
+const path = require('path');
+const webpack = require('webpack');
+const webpackConfig = require('./config/webpack.config.js');
+const webpackDevMiddleware = require('webpack-dev-middleware');
 
-const compiler = webpack(webpackConfig); // TAKE OUT IN PRODUCTION
+const compiler = webpack(webpackConfig);
+
 const app = express();
 
+app.use(session);
 app.use(bodyParser.json());
-app.use('/api/', router);
+addPassportMiddleware(app);
+
+app.use('/', baseRouter);
+app.use('/api/', apiRouter);
+app.use('/login', authRouter);
+
 app.use(express.static(path.join(__dirname, '../client/public')));
 
-// >>>>>>>TAKE OUT DURING PRODUCTION>>>>>>>>>
-app.use(webpackDevMiddleware(compiler, {
-  hot: true,
-  filename: 'bundle.js',
-  publicPath: '/',
-  stats: {
-    colors: true,
-  },
-  historyApiFallback: true,
-}));
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+if (process.env.NODE_ENV === 'dev') {
+  app.use(webpackDevMiddleware(compiler, {
+    hot: true,
+    filename: 'bundle.js',
+    publicPath: '/',
+    stats: {
+      colors: true,
+    },
+    historyApiFallback: true,
+  }));
+}
 
-const server = app.listen(3000, () => {
-  const host = server.address().address;
-  const port = server.address().port;
-  console.log(`App listening at http://${host}:${port}`);
+app.listen(process.env.port || 3000, () => {
+  console.log(`app listening on ${process.env.port || '3000'}`);
 });

@@ -2,6 +2,62 @@ const { User } = require('../models');
 const { parseErr } = require('./util');
 
 module.exports = {
+  getEventsByUserId(req, res) {
+    User.findById(req.user._id)
+      .populate({
+        path: 'events',
+        populate: { path: 'attendees' },
+      })
+      .populate({
+        path: 'friends',
+        populate: { path: 'events' },
+      })
+      .exec((err, user) => {
+        if (err) {
+          console.error('error in getUser', parseErr(err));
+          res.status(500).send(parseErr(err));
+        } else {
+          const userEvents = user.events;
+          const friendEvents = [];
+          user.friends.forEach((friend) => {
+            friendEvents.push(...friend.events);
+          });
+          res.send([...userEvents, ...friendEvents]);
+        }
+      });
+  },
+  // START CONTROLLERS TO TAKE OUT IN PRODUCTION
+  createUser(req, res) {
+    User.update({ _id: req.body._id },
+      { $set: { name: req.body.name, _id: req.body._id, friends: req.body.friends } },
+      { new: true, upsert: true })
+      .then(() => {
+        res.send('successfully inserted or updated user');
+      })
+      .catch((err) => {
+        console.error('error creating user', parseErr(err));
+        res.status(500).send(parseErr(err));
+      });
+  },
+  getUser(req, res) {
+    User.findById(req.user._id)
+      .populate({
+        path: 'events',
+        populate: { path: 'attendees' },
+      })
+      .populate({
+        path: 'friends',
+        populate: { path: 'events' },
+      })
+      .exec((err, user) => {
+        if (err) {
+          console.error('error in getUser', parseErr(err));
+          res.status(500).send(parseErr(err));
+        } else {
+          res.send(user);
+        }
+      });
+  },
   getAllUsers(req, res) {
     User.find({})
       .populate({
@@ -21,35 +77,5 @@ module.exports = {
         }
       });
   },
-  getUser(req, res) {
-    User.findById(req.params._id)
-      .populate({
-        path: 'events',
-        populate: { path: 'attendees' },
-      })
-      .populate({
-        path: 'friends',
-        populate: { path: 'events' },
-      })
-      .exec((err, user) => {
-        if (err) {
-          console.error('error in getUser', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(user);
-        }
-      });
-  },
-  createUser(req, res) {
-    User.update({ _id: req.body._id },
-      { $set: { name: req.body.name, _id: req.body._id, friends: req.body.friends } },
-      { new: true, upsert: true })
-      .then(() => {
-        res.send('successfully inserted or updated user');
-      })
-      .catch((err) => {
-        console.error('error creating user', parseErr(err));
-        res.status(500).send(parseErr(err));
-      });
-  },
+  // END CONTROLLERS TO TAKE OUT IN PRODUCTION
 };
