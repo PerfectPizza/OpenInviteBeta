@@ -18,7 +18,7 @@ class GMap extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/event/')
+    axios.get('/api/event')
       .then(({ data: events }) => {
         this.props.addEvents(events);
         this.setState({ events });

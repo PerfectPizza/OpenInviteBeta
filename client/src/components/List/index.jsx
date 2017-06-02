@@ -17,7 +17,7 @@ class List extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/event/')
+    axios.get('/api/event')
       .then(({ data: events }) => {
         this.props.addEvents(events);
         this.setState({ events: [...this.state.events, ...events] });
@@ -34,6 +34,44 @@ class List extends Component {
       })
       .catch(() => {
         alert('There was a problem deleting the event');
+      });
+  }
+
+  joinEvent(event_id, user_id) {
+    axios.post(`/api/event/${event_id}/attendee`, {
+      _id: user_id,
+    })
+      .then(() => {
+        const event = this.state.events.find(event._id === event_id);
+        this.props.addAttendee(event_id, user_id);
+        this.setState({
+          events: [
+            ...this.state.events.filter(event => event._id !== event_id),
+            { ...event, attendees: [...event.attendees, user_id] },
+          ],
+        });
+      })
+      .catch(() => {
+        alert('There was a problem adding this attendee to the event');
+      });
+  }
+
+  leaveEvent(event_id, user_id) {
+    axios.delete(`/api/event/${event_id}/attendee/`, {
+      _id: user_id,
+    })
+      .then(() => {
+        const event = this.state.events.find(event._id === event_id);
+        this.props.addAttendee(event_id, user_id);
+        this.setState({
+          events: [
+            ...this.state.events.filter(event => event._id !== event_id),
+            { ...event, attendees: [...event.attendees, user_id] },
+          ],
+        });
+      })
+      .catch(() => {
+        alert('There was a problem adding this attendee to the event');
       });
   }
 

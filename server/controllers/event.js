@@ -14,7 +14,15 @@ module.exports = {
       });
   },
   updateEvent(req, res) {
-    Event.findByIdAndUpdate(req.params.event_id, req.body, { new: true })
+    Event.findByIdAndUpdate(req.params.event_id,
+      {
+        title: req.body.title,
+        description: req.body.description,
+        start_time: req.body.start_time,
+        end_time: req.body.end_time,
+        location: req.body.location,
+      },
+      { new: true })
       .populate('attendees', '_id name')
       .exec((err, event) => {
         if (err) {
@@ -61,7 +69,7 @@ module.exports = {
   },
   addAttendeeByEventId(req, res) {
     Event.findByIdAndUpdate(req.params.event_id,
-      { $push: { attendees: req.body._id } })
+      { $push: { attendees: req.user._id } })
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
@@ -73,7 +81,7 @@ module.exports = {
   },
   removeAttendeeByEventId(req, res) {
     Event.findByIdAndUpdate(req.params.event_id,
-      { $pull: { attendees: req.params._id } })
+      { $pull: { attendees: req.user._id } })
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));

@@ -14,7 +14,7 @@ const ViewRouter = () => (
       <Route path="/map" component={GMap} />
       <Route path="/list" component={List} />
       <Route path="/edit/:event_id?" component={AddEdit} />
-      <Route path="/event/:event_id?" component={Event} />
+      <Route path="/event/:event_id" component={Event} />
     </div>
   </Router>
 );

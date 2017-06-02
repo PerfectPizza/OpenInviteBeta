@@ -10,12 +10,12 @@ const Event = ({ event, user }) => {
       <h2>{title}</h2>
       {user._id === event.creator &&
         <Link to={`/edit/${event._id}`}>
-        <span className="btn-floating btn-large waves-effect waves-light right">
-          <i className="right material-icons small blue">
-            mode_edit
-          </i>
-        </span>
-      </Link>}
+          <span className="btn-floating btn-large waves-effect waves-light right">
+            <i className="right material-icons small blue">
+              mode_edit
+            </i>
+          </span>
+        </Link>}
       <ul>
         <li>{startTime}</li>
         <li>{endTime}</li>
