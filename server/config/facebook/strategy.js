@@ -12,7 +12,9 @@ module.exports = () => {
   (accessToken, refreshToken, { id: _id, displayName: name }, cb) => {
     getUserData(accessToken)
       .then(({ friends, picture }) => {
-        User.findOneAndUpdate({ _id }, { name, accessToken, friends, picture }, { new: true, upsert: true })
+        User.findOneAndUpdate({ _id },
+          { name, accessToken, friends, picture },
+          { new: true, upsert: true })
           .populate({
             path: 'events',
             populate: { path: 'attendees' },

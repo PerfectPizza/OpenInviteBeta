@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deleteEvent, addEvents } from '../actions/events';
-import ListItem from './views/ListItem';
+import ListItem from './ListItem';
 
 require('./styles.css');
 

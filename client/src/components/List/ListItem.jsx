@@ -1,4 +1,4 @@
-import React from 'react';
+  import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 const ListItem = ({ event, deleteEvent, user_id }) => (
   <li key={event._id} className="collection-item">
     <span className="collection-item article-list">
-      <Link to={`/event/${event._id}`}>{event.title}</Link>
+      <Link className="left" to={`/event/${event._id}`}>{event.title}</Link>
       {event.creator === user_id &&
       <span>
         <i className="right material-icons small">
-        <Link to={`/edit/${event._id}`}>mode_edit</Link>
+          <Link to={`/edit/${event._id}`}>mode_edit</Link>
         </i>
         <i className="right material-icons small" onClick={() => { deleteEvent(event._id); }}>
           delete

@@ -148,6 +148,7 @@ AddEdit.propTypes = {
     location: PropTypes.objectOf(PropTypes.string),
     _id: PropTypes.string,
   }),
+  history: PropTypes.object,
 };
 
 AddEdit.defaultProps = {

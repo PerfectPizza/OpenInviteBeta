@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { storeUser } from '../actions/user';
 
@@ -13,7 +13,6 @@ class Sidebar extends Component {
     let showing = false;
     const sidebar = document.getElementById('sidebar');
     const toggle = document.getElementsByClassName('toggle')[0];
-    console.log(sidebar, toggle)
     function show() {
       if (!showing) {
         sidebar.classList.add('active');
@@ -43,7 +42,8 @@ class Sidebar extends Component {
         <ul className="align-left slide-in" id="sidebar">
           <li><div className="userView">
             <Link to="/list">
-              {this.props.user && <img alt="user" className="circle" src={this.props.user.picture} />}
+              {this.props.user &&
+                <img alt="user" className="circle" src={this.props.user.picture} />}
             </Link>
           </div></li>
           <hr />
@@ -65,5 +65,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(storeUser(user));
   },
 });
+
+Sidebar.PropTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    events: PropTypes.array.isRequired,
+    friends: PropTypes.array.isRequired,
+    picture: PropTypes.string.isRequired,
+  }).isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+  addEvents: PropTypes.func.isRequired,
+};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));
