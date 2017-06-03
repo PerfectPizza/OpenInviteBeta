@@ -6,7 +6,7 @@ import { deleteEvent, addAttendee, removeAttendee } from '../actions/events';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const ListItem = ({ event, attending, user, deleteEvent, addAttendee, removeAttendee }) => {
+const ListItem = ({ event, user, deleteEvent, addAttendee, removeAttendee }) => {
   function handleDelete() {
     axios.delete(`/api/event/${event._id}`)
       .then(() => {
