@@ -5,7 +5,7 @@ import axios from 'axios';
 import { deleteEvent, addAttendee, removeAttendee } from '../actions/events';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+// MAKE SURE ATTENDANCE STATUS PERSISTS
 const ListItem = ({ event, user, deleteEvent, addAttendee, removeAttendee }) => {
   function handleDelete() {
     axios.delete(`/api/event/${event._id}`)
@@ -46,7 +46,7 @@ const ListItem = ({ event, user, deleteEvent, addAttendee, removeAttendee }) => 
       <span>
         <Link to={`/event/${event._id}`}>{event.title}</Link>
         { event.creator !== user._id && (
-            !event.attendees.find(attendee => attendee._id === user._id)
+            !event.attendees.find(attendee => attendee === user._id)
             ? <i className="material-icons small right" onClick={() => { handleJoin(); }}>add</i>
             : <i className="material-icons small right" onClick={() => { handleLeave(); }}>report_problem</i>
           )}
@@ -68,13 +68,12 @@ const ListItem = ({ event, user, deleteEvent, addAttendee, removeAttendee }) => 
 ListItem.propTypes = {
   user: PropTypes.object.isRequired,
   event: PropTypes.object.isRequired,
-  attending: PropTypes.bool.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   addAttendee: PropTypes.func.isRequired,
   removeAttendee: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = ({ user, events }) => ({ user, events });
 
 const mapDispatchToProps = dispatch => ({
   deleteEvent: (_id) => {

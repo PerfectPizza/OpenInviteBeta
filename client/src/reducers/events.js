@@ -13,20 +13,15 @@ const eventsReducer = (state = [], { type, payload }) => {
   }
   if (type === 'ADD ATTENDEE') {
     // payload is an object containing an event_id and a user_id
-    const oldEvent = state.find(event => event._id === payload.event_id);
-    return [
-      ...state.filter(event => event._id !== payload.event_id),
-      { ...oldEvent, attendees: [...oldEvent.attendees, { _id: payload.user_id }] },
-    ];
+    const newEvent = state.find(event => event._id === payload.event_id);
+    newEvent.attendees.push(payload.user_id);
+    return [...state.filter(event => event._id !== payload.event_id), newEvent];
   }
   if (type === 'REMOVE ATTENDEE') {
     // payload is an object containing an event_id and a user_id
-    const oldEvent = state.find(event => event._id === payload.event_id);
-    return [
-      ...state.filter(event => event._id !== payload.event_id),
-      { ...oldEvent,
-        attendees: oldEvent.attendees.filter(attendee => attendee._id !== payload.user_id),
-      }];
+    const newEvent = state.find(event => event._id === payload.event_id);
+    newEvent.attendees = newEvent.attendees.filter(attendee => attendee !== payload.user_id);
+    return [...state.filter(event => event._id !== payload.event_id), newEvent];
   }
   return state;
 };

@@ -13,7 +13,11 @@ class List extends Component {
   componentWillMount() {
     axios.get('/api/event')
       .then(({ data: events }) => {
-        this.props.addEvents(events);
+        const oldEvents = this.props.events;
+        const newEvents = events.filter(event => !oldEvents
+          .filter(oldEvent => event._id !== oldEvent._id)
+          .length);
+        this.props.addEvents(newEvents);
       });
   }
 
@@ -26,9 +30,6 @@ class List extends Component {
               <ListItem
                 key={event._id}
                 event={event}
-                attending={
-                  !!event.attendees.find(attendee => attendee === this.props.user._id)
-                }
               />,
             )}
         </ul>
