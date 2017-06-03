@@ -55,18 +55,6 @@ module.exports = {
         }
       });
   },
-  getAttendeesByEventId(req, res) {
-    Event.findById(req.params.event_id)
-      .populate('attendees', '_id name')
-      .exec((err, event) => {
-        if (err) {
-          console.error('error in getEventsByUserId', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(event.attendees);
-        }
-      });
-  },
   addAttendeeByEventId(req, res) {
     Event.findByIdAndUpdate(req.params.event_id,
       { $push: { attendees: req.user._id } })
@@ -91,7 +79,7 @@ module.exports = {
         }
       });
   },
-  // TAKE THIS CONTROLLER OUT IN PRODUCTION
+  // TAKE THESE CONTROLLERS OUT IN PRODUCTION
   getEvent(req, res) {
     Event.findById(req.params.event_id)
       .populate('attendees', '_id name')
@@ -101,6 +89,18 @@ module.exports = {
           res.status(500).send(parseErr(err));
         } else {
           res.send(event);
+        }
+      });
+  },
+  getAttendeesByEventId(req, res) {
+    Event.findById(req.params.event_id)
+      .populate('attendees', '_id name')
+      .exec((err, event) => {
+        if (err) {
+          console.error('error in getEventsByUserId', parseErr(err));
+          res.status(500).send(parseErr(err));
+        } else {
+          res.send(event.attendees);
         }
       });
   },
