@@ -4,6 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const Event = ({ event, user }) => {
+  console.log(event);
   const { title, start_time: startTime, end_time: endTime, attendees } = event;
   return (
     <div className="main">
@@ -19,7 +20,6 @@ const Event = ({ event, user }) => {
       <ul>
         <li>{startTime}</li>
         <li>{endTime}</li>
-        { attendees.map(attendee => <li>{attendee.name}</li>)}
       </ul>
     </div>
   );
