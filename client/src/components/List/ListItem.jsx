@@ -22,7 +22,7 @@ const ListItem = ({ event, user, deleteEvent, addAttendee, removeAttendee }) => 
       _id: user._id,
     })
       .then(() => {
-        addAttendee(event._id, user._id);
+        addAttendee(event._id, user._id, user.name);
       })
       .catch((err) => {
         console.error('error joining event', err);
@@ -46,7 +46,7 @@ const ListItem = ({ event, user, deleteEvent, addAttendee, removeAttendee }) => 
       <span>
         <Link to={`/event/${event._id}`}>{event.title}</Link>
         { event.creator !== user._id && (
-            !event.attendees.find(attendee => attendee === user._id)
+            !event.attendees.find(attendee => attendee._id === user._id)
             ? <i className="material-icons small right" onClick={() => { handleJoin(); }}>add</i>
             : <i className="material-icons small right" onClick={() => { handleLeave(); }}>report_problem</i>
           )}
@@ -66,7 +66,12 @@ const ListItem = ({ event, user, deleteEvent, addAttendee, removeAttendee }) => 
 };
 
 ListItem.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    events: PropTypes.array.isRequired,
+    friends: PropTypes.array.isRequired,
+  }).isRequired,
   event: PropTypes.object.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   addAttendee: PropTypes.func.isRequired,
@@ -79,8 +84,8 @@ const mapDispatchToProps = dispatch => ({
   deleteEvent: (_id) => {
     dispatch(deleteEvent(_id));
   },
-  addAttendee: (event_id, user_id) => {
-    dispatch(addAttendee(event_id, user_id));
+  addAttendee: (event_id, user_id, userName) => {
+    dispatch(addAttendee(event_id, user_id, userName));
   },
   removeAttendee: (event_id, user_id) => {
     dispatch(removeAttendee(event_id, user_id));

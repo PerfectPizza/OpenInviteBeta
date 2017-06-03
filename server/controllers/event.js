@@ -6,7 +6,16 @@ module.exports = {
     const event = new Event({ ...req.body, creator: req.user._id });
     event.save()
       .then((savedEvent) => {
-        res.send(savedEvent);
+        Event.findOne(savedEvent)
+        .populate('attendees', '_id name')
+        .exec((err, populatedEvent) => {
+          if (err) {
+            console.error('error in createEvent', parseErr(err));
+            res.status(500).send(parseErr(err));
+          } else {
+            res.send(populatedEvent);
+          }
+        });
       })
       .catch((err) => {
         console.error('error creating event', parseErr(err));
@@ -57,7 +66,12 @@ module.exports = {
   },
   addAttendeeByEventId(req, res) {
     Event.findByIdAndUpdate(req.params.event_id,
-      { $push: { attendees: req.user._id } })
+      { $push: { attendees: req.user._id } },
+      { new: true })
+      .populate({
+        path: 'attendees',
+        populate: { path: '_id name' },
+      })
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
@@ -69,7 +83,12 @@ module.exports = {
   },
   removeAttendeeByEventId(req, res) {
     Event.findByIdAndUpdate(req.params.event_id,
-      { $pull: { attendees: req.user._id } })
+      { $pull: { attendees: req.user._id } },
+      { new: true })
+      .populate({
+        path: 'attendees',
+        populate: { path: '_id name' },
+      })
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));

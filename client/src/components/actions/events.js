@@ -19,10 +19,10 @@ module.exports = {
       payload: event,
     };
   },
-  addAttendee(event_id, user_id) {
+  addAttendee(event_id, user_id, userName) {
     return {
       type: 'ADD ATTENDEE',
-      payload: { event_id, user_id },
+      payload: { event_id, user_id, userName },
     };
   },
   removeAttendee(event_id, user_id) {

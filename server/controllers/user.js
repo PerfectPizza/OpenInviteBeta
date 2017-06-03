@@ -6,11 +6,16 @@ module.exports = {
     User.findById(req.user._id)
       .populate({
         path: 'events',
-        populate: { path: 'attendees' },
+        populate: { path: 'attendees', select: 'name _id' },
       })
       .populate({
         path: 'friends',
-        populate: { path: 'events' },
+        populate: { path: 'events',
+          populate: {
+            path: 'attendees',
+            select: 'name _id',
+          },
+        },
       })
       .exec((err, user) => {
         if (err) {

@@ -10,13 +10,13 @@ require('./styles.css');
 
 class List extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     axios.get('/api/event')
       .then(({ data: events }) => {
-        const oldEvents = this.props.events;
-        const newEvents = events.filter(event => !oldEvents
-          .filter(oldEvent => event._id !== oldEvent._id)
-          .length);
+        const oldEvents = JSON.stringify(this.props.events);
+        const newEvents = events
+          .filter(event => !oldEvents.includes(JSON.stringify(event)));
+        console.log('newEvents', newEvents);
         this.props.addEvents(newEvents);
       });
   }
@@ -38,7 +38,7 @@ class List extends Component {
   }
 }
 
-const mapStateToProps = ({ user, events }) => ({ user, events });
+const mapStateToProps = ({ events }) => ({ events });
 
 const mapDispatchToProps = dispatch => ({
   addEvents: (events) => {
@@ -47,12 +47,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 List.PropTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
-    events: PropTypes.array.isRequired,
-    friends: PropTypes.array.isRequired,
-  }).isRequired,
   events: PropTypes.array.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   addEvents: PropTypes.func.isRequired,
