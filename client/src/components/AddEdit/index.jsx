@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import { localToUTC, UTCToLocal } from '../util';
+import { deleteEvent } from '../actions/events';
 
 require('./styles.css');
 
@@ -18,8 +19,8 @@ class AddEdit extends Component {
       start_time: event.start_time,
       end_time: event.end_time,
       location: {
-        lng: event.location.longitude || '123',
-        lat: event.location.latitude || '456',
+        lat: event.location.lat || 30.2747,
+        lng: event.location.lng || -97.7404,
       },
     };
   }
@@ -30,7 +31,7 @@ class AddEdit extends Component {
     : axios.post('/api/event', this.state);
     query
       .then(() => {
-        // No need to dispatch here because the list component will retrieve uptodate events
+        this.props.remove(this.props.event._id);
         this.props.history.push('/list');
       })
       .catch(() => {
@@ -148,7 +149,8 @@ AddEdit.propTypes = {
     location: PropTypes.objectOf(PropTypes.string),
     _id: PropTypes.string,
   }),
-  history: PropTypes.object,
+  history: PropTypes.object.isRequired,
+  remove: PropTypes.func.isRequired,
 };
 
 AddEdit.defaultProps = {
@@ -169,4 +171,10 @@ const mapStateToProps = ({ events }, { match }) => ({
   event: events.find(event => event._id === match.params.event_id),
 });
 
-export default withRouter(connect(mapStateToProps)(AddEdit));
+const mapDispatchToProps = dispatch => ({
+  remove: (_id) => {
+    dispatch(deleteEvent(_id));
+  },
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddEdit));
