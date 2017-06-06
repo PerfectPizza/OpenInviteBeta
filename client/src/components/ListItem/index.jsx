@@ -42,7 +42,6 @@ ListItem.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     _id: PropTypes.string.isRequired,
-    events: PropTypes.array.isRequired,
     friends: PropTypes.array.isRequired,
   }).isRequired,
   event: PropTypes.object.isRequired,
