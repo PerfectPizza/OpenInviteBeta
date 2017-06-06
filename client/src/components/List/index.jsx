@@ -16,7 +16,7 @@ class List extends Component {
         const oldEvents = JSON.stringify(this.props.events);
         const newEvents = events
           .filter(event => !oldEvents.includes(JSON.stringify(event)));
-        console.log('newEvents', newEvents);
+        console.log(newEvents)
         this.props.addEvents(newEvents);
       });
   }
@@ -28,7 +28,7 @@ class List extends Component {
           {this.props.events &&
             this.props.events.map(event =>
               <ListItem
-                key={event._id}
+                key={JSON.stringify(event)}
                 event={event}
               />,
             )}
