@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { addAttendee, removeAttendee } from '../actions/events';
 import RSVP from '../RSVP';
+import moment from 'moment';
 
 const Event = ({ event, user, events }) => {
   const { title, start_time: startTime, end_time: endTime, attendees } = event;
@@ -23,6 +24,7 @@ const Event = ({ event, user, events }) => {
                 </span>
               </Link>}
               <h3 className="center">{title}</h3>
+              <div className="center">{moment(startTime).format('HH:MM')}-{moment(startTime).format('HH:MM')}</div>
               <div>MAP</div>
             </div>
           </div>
@@ -41,9 +43,11 @@ const Event = ({ event, user, events }) => {
                     Be the first to RSVP
                   </span>
               }
+              {event.creator !== user._id && 
               <div className="card-action">
-                <RSVP event={event}/>
+                <RSVP event={event} />
               </div>
+              }
             </div>
           </div>
         </div>
