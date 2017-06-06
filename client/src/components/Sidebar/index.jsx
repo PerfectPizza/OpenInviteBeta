@@ -3,7 +3,10 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import loadGoogleMapsAPI from 'load-google-maps-api';
 import { storeUser } from '../actions/user';
+import { storeLocation } from '../actions/location';
+import { storeMap } from '../actions/map';
 
 require('./styles.css');
 
@@ -30,14 +33,31 @@ class Sidebar extends Component {
     axios.get('/me')
       .then(({ data: user }) => {
         this.props.storeUser(user);
+      })
+      .then(() => {
+        navigator.geolocation.getCurrentPosition((locationData) => {
+          const { latitude, longitude } = locationData.coords;
+          console.log(typeof latitude, typeof longitude)
+          this.props.storeLocation({ lat: latitude, lng: longitude });
+        },
+        null,
+        { time: 10000 });
+      })
+      .then(loadGoogleMapsAPI)
+      .then((googleMapsClient) => {
+        this.props.storeMap(googleMapsClient);
+      })
+      .catch((err) => {
+        // gracefully check errors to determine source and give appropriate user feedback
+        console.error(err);
       });
   }
 
   render() {
     return (
-      <div>
+      <div className="sidebar">
         <a className="button-collapse toggle active">
-          <i className="material-icons">menu</i>
+          <i className="material-icons" id="menu">menu</i>
         </a>
         <ul className="align-left slide-in" id="sidebar">
           <li><div className="userView">
@@ -64,6 +84,12 @@ const mapDispatchToProps = dispatch => ({
   storeUser: (user) => {
     dispatch(storeUser(user));
   },
+  storeLocation: (location) => {
+    dispatch(storeLocation(location));
+  },
+  storeMap: (googleMapsClient) => {
+    dispatch(storeMap(googleMapsClient));
+  },
 });
 
 Sidebar.PropTypes = {
@@ -74,8 +100,8 @@ Sidebar.PropTypes = {
     friends: PropTypes.array.isRequired,
     picture: PropTypes.string.isRequired,
   }).isRequired,
-  deleteEvent: PropTypes.func.isRequired,
-  addEvents: PropTypes.func.isRequired,
+  storeUser: PropTypes.func.isRequired,
+  storeLocation: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));

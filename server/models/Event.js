@@ -34,11 +34,11 @@ const EventSchema = new Schema({
   attendees: [{ type: String, ref: 'User' }],
   location: {
     lat: {
-      type: String,
+      type: Number,
       required: [true, 'A valid location is required for each event'],
     },
     lng: {
-      type: String,
+      type: Number,
       required: [true, 'A valid location is required for each event'],
     },
   },

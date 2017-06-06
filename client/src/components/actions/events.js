@@ -1,5 +1,3 @@
-// MAKE SURE ATTENDANCE STATUS PERSISTS
-
 module.exports = {
   deleteEvent(_id) {
     return {
