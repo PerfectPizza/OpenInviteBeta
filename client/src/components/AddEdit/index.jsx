@@ -19,7 +19,7 @@ class AddEdit extends Component {
       description: event.description,
       start_time: event.start_time,
       end_time: event.end_time,
-      location: event.location.lat ? event.location : userLocation,
+      location: event.location || userLocation,
     };
   }
 

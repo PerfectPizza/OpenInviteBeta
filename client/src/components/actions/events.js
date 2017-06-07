@@ -17,10 +17,11 @@ module.exports = {
       payload: event,
     };
   },
-  addAttendee(eventId, userId, userName) {
+  addAttendee(eventId, userId, userName, userPicture) {
+    console.log(userPicture);
     return {
       type: 'ADD ATTENDEE',
-      payload: { eventId, userId, userName },
+      payload: { eventId, userId, userName, userPicture },
     };
   },
   removeAttendee(eventId, userId) {

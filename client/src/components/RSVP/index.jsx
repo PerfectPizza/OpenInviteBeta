@@ -12,7 +12,7 @@ const RSVP = ({ event, events, user, addAttendee, removeAttendee }) => {
       _id: user._id,
     })
       .then(() => {
-        addAttendee(event._id, user._id, user.name);
+        addAttendee(event._id, user._id, user.name, user.picture);
       })
       .catch((err) => {
         console.error('error joining event', err);
@@ -40,8 +40,8 @@ const RSVP = ({ event, events, user, addAttendee, removeAttendee }) => {
 const mapStateToProps = ({ user, events }) => ({ user, events });
 
 const mapDispatchToProps = dispatch => ({
-  addAttendee: (eventId, userId, userName) => {
-    dispatch(addAttendee(eventId, userId, userName));
+  addAttendee: (eventId, userId, userName, userPicture) => {
+    dispatch(addAttendee(eventId, userId, userName, userPicture));
   },
   removeAttendee: (eventId, userId) => {
     dispatch(removeAttendee(eventId, userId));
