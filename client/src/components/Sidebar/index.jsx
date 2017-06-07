@@ -37,13 +37,12 @@ class Sidebar extends Component {
       .then(() => {
         navigator.geolocation.getCurrentPosition((locationData) => {
           const { latitude, longitude } = locationData.coords;
-          console.log(typeof latitude, typeof longitude)
           this.props.storeLocation({ lat: latitude, lng: longitude });
         },
         null,
-        { time: 10000 });
+        { time: 2000 });
       })
-      .then(loadGoogleMapsAPI)
+      .then(() => loadGoogleMapsAPI({ libraries: ['places'], key: 'AIzaSyA2RynigysTx4S1q-F33uTwoble1SG6LrU' }))
       .then((googleMapsClient) => {
         this.props.storeMap(googleMapsClient);
       })

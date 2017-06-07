@@ -6,14 +6,27 @@ module.exports = {
     User.findById(req.user._id)
       .populate({
         path: 'events',
-        populate: { path: 'attendees', select: 'name _id' },
+        populate: { path: 'attendees', select: 'name _id picture' },
+      })
+      .populate({
+        path: 'events',
+        populate: { path: 'creator', select: 'name _id picture' },
       })
       .populate({
         path: 'friends',
         populate: { path: 'events',
           populate: {
             path: 'attendees',
-            select: 'name _id',
+            select: 'name _id picture',
+          },
+        },
+      })
+      .populate({
+        path: 'friends',
+        populate: { path: 'events',
+          populate: {
+            path: 'creator',
+            select: 'name _id picture',
           },
         },
       })

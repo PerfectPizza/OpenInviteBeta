@@ -14,9 +14,7 @@ class List extends Component {
     axios.get('/api/event')
       .then(({ data: events }) => {
         const oldEvents = JSON.stringify(this.props.events);
-        const newEvents = events
-          .filter(event => !oldEvents.includes(JSON.stringify(event)));
-        console.log(newEvents)
+        const newEvents = events.filter(event => !oldEvents.includes(event._id));
         this.props.addEvents(newEvents);
       });
   }
@@ -48,7 +46,6 @@ const mapDispatchToProps = dispatch => ({
 
 List.PropTypes = {
   events: PropTypes.array.isRequired,
-  deleteEvent: PropTypes.func.isRequired,
   addEvents: PropTypes.func.isRequired,
 };
 

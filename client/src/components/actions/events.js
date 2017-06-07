@@ -1,8 +1,8 @@
 module.exports = {
-  deleteEvent(_id) {
+  deleteEvent(id) {
     return {
       type: 'DELETE EVENT',
-      payload: _id,
+      payload: id,
     };
   },
   addEvents(events) {
@@ -17,16 +17,16 @@ module.exports = {
       payload: event,
     };
   },
-  addAttendee(event_id, user_id, userName) {
+  addAttendee(eventId, userId, userName) {
     return {
       type: 'ADD ATTENDEE',
-      payload: { event_id, user_id, userName },
+      payload: { eventId, userId, userName },
     };
   },
-  removeAttendee(event_id, user_id) {
+  removeAttendee(eventId, userId) {
     return {
       type: 'REMOVE ATTENDEE',
-      payload: { event_id, user_id },
+      payload: { eventId, userId },
     };
   },
 };

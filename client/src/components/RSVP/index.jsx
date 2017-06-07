@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { addAttendee, removeAttendee } from '../actions/events';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { addAttendee, removeAttendee } from '../actions/events';
 
 const RSVP = ({ event, events, user, addAttendee, removeAttendee }) => {
   function handleJoin() {
@@ -39,12 +39,31 @@ const RSVP = ({ event, events, user, addAttendee, removeAttendee }) => {
 const mapStateToProps = ({ user, events }) => ({ user, events });
 
 const mapDispatchToProps = dispatch => ({
-  addAttendee: (event_id, user_id, userName) => {
-    dispatch(addAttendee(event_id, user_id, userName));
+  addAttendee: (eventId, userId, userName) => {
+    dispatch(addAttendee(eventId, userId, userName));
   },
-  removeAttendee: (event_id, user_id) => {
-    dispatch(removeAttendee(event_id, user_id));
+  removeAttendee: (eventId, userId) => {
+    dispatch(removeAttendee(eventId, userId));
   },
 });
+
+RSVP.PropTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    events: PropTypes.array.isRequired,
+    friends: PropTypes.array.isRequired,
+    picture: PropTypes.string.isRequired,
+  }).isRequired,
+  events: PropTypes.array.isRequired,
+  addEvents: PropTypes.func.isRequired,
+  addMarkers: PropTypes.func.isRequired,
+  userLocation: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+  }).isRequired,
+  map: PropTypes.object.isRequired,
+  event: PropTypes.object,
+};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RSVP));

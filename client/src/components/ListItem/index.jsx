@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
-import { deleteEvent, addAttendee, removeAttendee } from '../actions/events';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { deleteEvent } from '../actions/events';
 import RSVP from '../RSVP';
 
 const ListItem = ({ event, user, deleteEvent }) => {
@@ -22,8 +21,8 @@ const ListItem = ({ event, user, deleteEvent }) => {
     <li key={event._id} className="collection-item">
       <span>
         <Link to={`/event/${event._id}`}>{event.title}</Link>
-        {event.creator !== user._id && <RSVP event={event}/> }
-        { event.creator === user._id &&
+        {event.creator._id !== user._id && <RSVP event={event} /> }
+        { event.creator._id === user._id &&
           <span>
             <i className="material-icons small right">
               <Link to={`/edit/${event._id}`}>mode_edit</Link>

@@ -7,7 +7,8 @@ module.exports = {
     event.save()
       .then((savedEvent) => {
         Event.findOne(savedEvent)
-        .populate('attendees', '_id name')
+        .populate('attendees', '_id name picture')
+        .populate('creator', '_id name picture')
         .exec((err, populatedEvent) => {
           if (err) {
             console.error('error in createEvent', parseErr(err));
@@ -32,7 +33,8 @@ module.exports = {
         location: req.body.location,
       },
       { new: true })
-      .populate('attendees', '_id name')
+      .populate('attendees', '_id name picture')
+      .populate('creator', '_id name picture')
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
@@ -54,7 +56,8 @@ module.exports = {
   },
   getCreatedEventsByUserId(req, res) {
     Event.find({ creator: req.user._id })
-      .populate('attendees', '_id name')
+      .populate('attendees', '_id name picture')
+      .populate('creator', '_id name picture')
       .exec((err, events) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
@@ -68,10 +71,8 @@ module.exports = {
     Event.findByIdAndUpdate(req.params.event_id,
       { $push: { attendees: req.user._id } },
       { new: true })
-      .populate({
-        path: 'attendees',
-        populate: { path: '_id name' },
-      })
+      .populate('attendees', '_id name picture')
+      .populate('creator', '_id name picture')
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
@@ -85,10 +86,8 @@ module.exports = {
     Event.findByIdAndUpdate(req.params.event_id,
       { $pull: { attendees: req.user._id } },
       { new: true })
-      .populate({
-        path: 'attendees',
-        populate: { path: '_id name' },
-      })
+      .populate('attendees', '_id name picture')
+      .populate('creator', '_id name picture')
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
@@ -101,7 +100,8 @@ module.exports = {
   // TAKE THESE CONTROLLERS OUT IN PRODUCTION
   getEvent(req, res) {
     Event.findById(req.params.event_id)
-      .populate('attendees', '_id name')
+      .populate('attendees', '_id name picture')
+      .populate('creator', '_id name picture')
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
@@ -113,7 +113,8 @@ module.exports = {
   },
   getAttendeesByEventId(req, res) {
     Event.findById(req.params.event_id)
-      .populate('attendees', '_id name')
+      .populate('attendees', '_id name picture')
+      .populate('creator', '_id name picture')
       .exec((err, event) => {
         if (err) {
           console.error('error in getEventsByUserId', parseErr(err));
