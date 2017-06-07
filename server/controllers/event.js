@@ -5,8 +5,8 @@ module.exports = {
   createEvent(req, res) {
     const event = new Event({ ...req.body, creator: req.user._id });
     event.save()
-      .then((savedEvent) => {
-        res.send(savedEvent);
+      .then(() => {
+        res.status(200).end();
       })
       .catch((err) => {
         console.error('error creating event', parseErr(err));
@@ -14,86 +14,50 @@ module.exports = {
       });
   },
   updateEvent(req, res) {
-    Event.findByIdAndUpdate(req.params.event_id, req.body, { new: true })
-      .populate('attendees', '_id name')
-      .exec((err, event) => {
-        if (err) {
-          console.error('error in getEventsByUserId', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(event);
-        }
+    Event.findByIdAndUpdate(req.params.event_id,
+      {
+        title: req.body.title,
+        description: req.body.description,
+        start_time: req.body.start_time,
+        end_time: req.body.end_time,
+        location: req.body.location,
+      })
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch((err) => {
+        console.error('error in getEventsByUserId', parseErr(err));
+        res.status(500).send(parseErr(err));
       });
   },
   deleteEvent(req, res) {
     Event.findByIdAndRemove(req.params.event_id)
-      .then((event) => {
-        res.send(event);
+      .then(() => {
+        res.status(200).end();
       })
       .catch((err) => {
         console.error('error in updateEvent', parseErr(err));
         res.status(500).send(parseErr(err));
       });
   },
-  getCreatedEventsByUserId(req, res) {
-    Event.find({ creator: req.user._id })
-      .populate('attendees', '_id name')
-      .exec((err, events) => {
-        if (err) {
-          console.error('error in getEventsByUserId', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(events);
-        }
-      });
-  },
-  getAttendeesByEventId(req, res) {
-    Event.findById(req.params.event_id)
-      .populate('attendees', '_id name')
-      .exec((err, event) => {
-        if (err) {
-          console.error('error in getEventsByUserId', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(event.attendees);
-        }
-      });
-  },
   addAttendeeByEventId(req, res) {
-    Event.findByIdAndUpdate(req.params.event_id,
-      { $push: { attendees: req.body._id } })
-      .exec((err, event) => {
-        if (err) {
-          console.error('error in getEventsByUserId', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(event.attendees);
-        }
+    Event.findByIdAndUpdate(req.params.event_id, { $push: { attendees: req.user._id } })
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch((err) => {
+        console.error('error in getEventsByUserId', parseErr(err));
+        res.status(500).send(parseErr(err));
       });
   },
   removeAttendeeByEventId(req, res) {
-    Event.findByIdAndUpdate(req.params.event_id,
-      { $pull: { attendees: req.params._id } })
-      .exec((err, event) => {
-        if (err) {
-          console.error('error in getEventsByUserId', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(event.attendees);
-        }
-      });
-  },
-  // TAKE THIS CONTROLLER OUT IN PRODUCTION
-  getEvent(req, res) {
-    Event.findById(req.params.event_id)
-      .populate('attendees', '_id name')
-      .exec((err, event) => {
-        if (err) {
-          console.error('error in getEventsByUserId', parseErr(err));
-          res.status(500).send(parseErr(err));
-        } else {
-          res.send(event);
-        }
+    Event.findByIdAndUpdate(req.params.event_id, { $pull: { attendees: req.user._id } })
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch((err) => {
+        console.error('error in getEventsByUserId', parseErr(err));
+        res.status(500).send(parseErr(err));
       });
   },
 };

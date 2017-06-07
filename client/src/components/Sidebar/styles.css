@@ -3,4 +3,35 @@ li {
   text-align: center
 }
 
+.align-left {
+  float:left;
+  margin-right:20px;
+}
 
+.slide-in {
+  opacity:0;
+}
+
+.align-left.slide-in {
+  display: none
+}
+
+.slide-in.active {
+  opacity:1;
+  display: block;
+}
+
+.toggle {
+  opacity: 0; 
+  height: 0;
+  overflow: hidden;
+}
+.active {
+  opacity: 1;
+  height: auto;
+}
+
+.sidebar {
+  z-index: 1;
+  position: absolute;
+}
