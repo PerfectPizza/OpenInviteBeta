@@ -13,8 +13,8 @@ const ViewRouter = () => (
       <Route path="/" component={Sidebar} />
       <Route path="/map" component={MapList} />
       <Route path="/list" component={List} />
-      <Route path="/edit/:event_id?" component={AddEdit} />
-      <Route path="/event/:event_id" component={Event} />
+      <Route path="/edit/:eventId?" component={AddEdit} />
+      <Route path="/event/:eventId" component={Event} />
     </div>
   </Router>
 );

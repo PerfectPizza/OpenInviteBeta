@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import proptypes from '../proptypes';
 import { deleteEvent } from '../actions/events';
 import RSVP from '../RSVP';
 
@@ -37,13 +38,10 @@ const ListItem = ({ event, user, deleteEvent }) => {
   );
 };
 
+// this component expects an event prop from its parent
 ListItem.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
-    friends: PropTypes.array.isRequired,
-  }).isRequired,
-  event: PropTypes.object.isRequired,
+  user: proptypes.user.isRequired,
+  event: proptypes.event.isRequired,
   deleteEvent: PropTypes.func.isRequired,
 };
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import loadGoogleMapsAPI from 'load-google-maps-api';
+import PropTypes from 'prop-types';
+import proptypes from '../proptypes';
 import { storeUser } from '../actions/user';
 import { storeLocation } from '../actions/location';
 import { storeMap } from '../actions/map';
@@ -92,13 +93,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 Sidebar.PropTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
-    events: PropTypes.array.isRequired,
-    friends: PropTypes.array.isRequired,
-    picture: PropTypes.string.isRequired,
-  }).isRequired,
+  user: proptypes.user.isRequired,
   storeUser: PropTypes.func.isRequired,
   storeLocation: PropTypes.func.isRequired,
 };

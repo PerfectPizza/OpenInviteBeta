@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import proptypes from '../proptypes';
 import ListItem from '../ListItem';
 import { addEvents } from '../actions/events';
 
@@ -45,7 +46,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 List.PropTypes = {
-  events: PropTypes.array.isRequired,
+  events: proptypes.events.isRequired,
   addEvents: PropTypes.func.isRequired,
 };
 

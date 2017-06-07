@@ -2,8 +2,9 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
+import PropTypes from 'prop-types';
+import proptypes from '../proptypes';
 import { addEvents } from '../actions/events';
 import { addMarkers } from '../actions/markers';
 
@@ -21,8 +22,8 @@ class MapList extends Component {
     .then(() => {
       const googleMapsClient = this.props.map;
       const center = {
-        lat: this.props.userLocation.lat || 30.255077800000002,
-        lng: this.props.userLocation.lng || -97.7560985,
+        lat: this.props.userLocation.lat,
+        lng: this.props.userLocation.lng,
       };
       document.getElementById('ListMap').innerHTML = '';
       const map = new googleMapsClient.Map(document.getElementById('ListMap'), { zoom: 15, center });
@@ -81,23 +82,19 @@ const mapDispatchToProps = dispatch => ({
 });
 
 MapList.PropTypes = {
-  events: PropTypes.array.isRequired,
-  event: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    creator: PropTypes.string.isRequired,
-    start_time: PropTypes.string.isRequired,
-    end_time: PropTypes.string.isRequired,
-    attendees: PropTypes.arrayOf(PropTypes.object).isRequired,
-    location: PropTypes.objectOf(PropTypes.number),
-    _id: PropTypes.string,
-  }),
+  events: proptypes.events.isRequired,
+  event: proptypes.event.isRequired,
   addEvents: PropTypes.func.isRequired,
   addMarkers: PropTypes.func.isRequired,
-  userLocation: PropTypes.shape({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  }).isRequired,
-  map: PropTypes.object.isRequired,
+  userLocation: proptypes.userLocation.isRequired,
+  map: proptypes.map.isRequired,
+};
+
+MapList.defaultProps = {
+  userLocation: {
+    lat: 30.255077800000002,
+    lng: -97.7560985,
+  },
 };
 
 

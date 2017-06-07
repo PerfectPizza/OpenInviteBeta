@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import proptypes from '../proptypes';
 import { addAttendee, removeAttendee } from '../actions/events';
 
 const RSVP = ({ event, events, user, addAttendee, removeAttendee }) => {
@@ -47,23 +48,13 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+// This component expects an event prop from its parent
 RSVP.PropTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
-    events: PropTypes.array.isRequired,
-    friends: PropTypes.array.isRequired,
-    picture: PropTypes.string.isRequired,
-  }).isRequired,
-  events: PropTypes.array.isRequired,
-  addEvents: PropTypes.func.isRequired,
-  addMarkers: PropTypes.func.isRequired,
-  userLocation: PropTypes.shape({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  }).isRequired,
-  map: PropTypes.object.isRequired,
-  event: PropTypes.object,
+  user: proptypes.user.isRequired,
+  events: PropTypes.arrayOf(proptypes.event).isRequired,
+  userLocation: proptypes.userLocation.isRequired,
+  addAttendee: PropTypes.func.isRequired,
+  event: proptypes.event.isRequired,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RSVP));

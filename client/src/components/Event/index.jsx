@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment-timezone';
+import PropTypes from 'prop-types';
+import proptypes from '../proptypes';
 import { updateEvent } from '../actions/events';
 import RSVP from '../RSVP';
 
@@ -12,11 +13,11 @@ require('./styles.css');
 class Event extends Component {
   componentDidMount() {
     const googleMapsClient = this.props.map;
-    const eventLocation = this.props.event.location;
-    document.getElementById('EventMap').innerHTML = '';
-    const map = new googleMapsClient.Map(document.getElementById('EventMap'), { zoom: 20, eventLocation });
+    const mapEl = document.getElementById('EventMap');
+    mapEl.innerHTML = '';
+    const map = new googleMapsClient.Map(mapEl, { center: this.props.event.location, zoom: 18 });
     new googleMapsClient.Marker({
-      position: eventLocation,
+      position: this.props.event.location,
       map,
     });
     axios.get(`/api/event/${this.props.event._id}`)
@@ -62,7 +63,7 @@ class Event extends Component {
                   attendees.map(attendee =>
                     <span key={attendee._id}>
                       {attendee.name}
-                      <img className="circle" alt={attendee.name} src={attendee.picture} />
+                      <img className="circle" alt="pic" src={attendee.picture} />
                     </span>
                   ) :
                     creator._id !== user._id &&
@@ -88,35 +89,17 @@ class Event extends Component {
 }
 
 Event.propTypes = {
-  event: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    creator: PropTypes.shape({
-      name: PropTypes.string,
-      _id: PropTypes.string,
-      picture: PropTypes.string,
-    }).isRequired,
-    _id: PropTypes.string.isRequired,
-    start_time: PropTypes.string.isRequired,
-    end_time: PropTypes.string.isRequired,
-    attendees: PropTypes.array.isRequired,
-    location: PropTypes.shape({
-      lat: PropTypes.number.isRequired,
-      lng: PropTypes.number.isRequired,
-    }).isRequired,
-  }).isRequired,
-  user: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-  }).isRequired,
-  map: PropTypes.object,
+  event: proptypes.event.isRequired,
+  user: proptypes.user.isRequired,
+  map: proptypes.map.isRequired,
   updateEvent: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ events, user, map, userLocation }, { match }) => ({
+const mapStateToProps = ({ events, user, map }, { match }) => ({
   event: events.find(event => event._id === match.params.eventId),
   user,
   events,
   map,
-  userLocation,
 });
 
 const mapDispatchToProps = dispatch => ({

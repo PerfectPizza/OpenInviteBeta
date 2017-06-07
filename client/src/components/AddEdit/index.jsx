@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment-timezone';
+import PropTypes from 'prop-types';
+import proptypes from '../proptypes';
 import { localToUTC, UTCToLocal } from '../util';
 import { deleteEvent } from '../actions/events';
 
@@ -18,7 +19,7 @@ class AddEdit extends Component {
       description: event.description,
       start_time: event.start_time,
       end_time: event.end_time,
-      location: event.location ? event.location : userLocation,
+      location: event.location.lat ? event.location : userLocation,
     };
   }
 
@@ -26,7 +27,7 @@ class AddEdit extends Component {
     const googleMapsClient = this.props.map;
     const map = new googleMapsClient.Map(document.getElementById('AddEditMap'), {
       center: this.state.location,
-      zoom: 13,
+      zoom: 18,
     });
     new googleMapsClient.Marker({
       position: this.state.location,
@@ -85,7 +86,7 @@ class AddEdit extends Component {
     : axios.post('/api/event', this.state);
     query
       .then(() => {
-        this.props.remove(this.props.event._id);
+        this.props.deleteEvent(this.props.event._id);
         this.props.history.push('/list');
       })
       .catch(() => {
@@ -193,39 +194,30 @@ class AddEdit extends Component {
 }
 
 AddEdit.propTypes = {
-  event: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    creator: PropTypes.string.isRequired,
-    start_time: PropTypes.string.isRequired,
-    end_time: PropTypes.string.isRequired,
-    attendees: PropTypes.arrayOf(PropTypes.string).isRequired,
-    location: PropTypes.objectOf(PropTypes.string),
-    _id: PropTypes.string,
-  }),
-  history: PropTypes.object.isRequired,
-  remove: PropTypes.func.isRequired,
-  map: PropTypes.object.isRequired,
+  event: proptypes.event,
+  map: proptypes.map.isRequired,
+  userLocation: proptypes.userLocation.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
 };
 
 AddEdit.defaultProps = {
   event: {
     title: '',
-    creator: '',
+    description: '',
     start_time: '',
     end_time: '',
-    attendees: [],
   },
 };
 
 const mapStateToProps = ({ events, map, userLocation }, { match }) => ({
-  event: events.find(event => event._id === match.params.event_id),
+  event: events.find(event => event._id === match.params.eventId),
   map,
   userLocation,
 });
 
 const mapDispatchToProps = dispatch => ({
-  remove: (_id) => {
-    dispatch(deleteEvent(_id));
+  deleteEvent: (id) => {
+    dispatch(deleteEvent(id));
   },
 });
 
