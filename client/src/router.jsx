@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory';
 import Sidebar from './components/Sidebar';
 import List from './components/List';
 import MapList from './components/MapList';
