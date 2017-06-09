@@ -6,6 +6,8 @@ import List from './components/List';
 import MapList from './components/MapList';
 import AddEdit from './components/AddEdit';
 import Event from './components/Event';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 const ViewRouter = () => (
   <Router>

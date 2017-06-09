@@ -5,8 +5,9 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import proptypes from '../proptypes';
-import { localToUTC, UTCToLocal } from '../util';
+import { localToUTC, UTCToLocal, todayOrTomorrow } from '../util';
 import { deleteEvent } from '../actions/events';
+import TimePicker from 'material-ui/TimePicker';
 
 require('./styles.css');
 
@@ -156,29 +157,25 @@ class AddEdit extends Component {
             </div>
             <div className="row">
               <div className="col s5 input-field">
-                <input
-                  className="input-list"
-                  id="start_time-AddEdit"
-                  onChange={e => this.setState({ start_time: localToUTC(e.target.value) })}
-                  type="datetime-local"
+                <TimePicker
+                  format="24hr"
+                  hintText="24hr Format"
                   value={UTCToLocal(this.state.start_time)}
+                  onChange={(event, time) => this.setState({ start_time: localToUTC(time) })}
                 />
-                <label
-                  className="active label-list"
-                  htmlFor="start_time-AddEdit"
+                 <label
+                  className="label-list active"
                 >start time</label>
               </div>
               <div className="col s5 input-field">
-                <input
-                  className="input-list"
-                  id="end_time-AddEdit"
-                  onChange={e => this.setState({ end_time: localToUTC(e.target.value) })}
-                  type="datetime-local"
-                  value={UTCToLocal(this.state.end_time)}
+                <TimePicker
+                  format="24hr"
+                  hintText="24hr Format"
+                  value={UTCToLocal(this.state.start_time)}
+                  onChange={(event, time) => this.setState({ end_time: localToUTC(time) })}
                 />
-                <label
-                  className="active label-list"
-                  htmlFor="end_time-AddEdit"
+                 <label
+                  className="label-list active"
                 >end time</label>
               </div>
             </div>

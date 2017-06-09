@@ -50,7 +50,7 @@ class Event extends Component {
                 </Link>}
                 <h3 className="center">{title}</h3>
                 <h5 className="center">posted by {creator.name}</h5>
-                <h5 className="center">{moment(startTime).format('HH:MM')}-{moment(endTime).format('HH:MM')}</h5>
+                <h5 className="center">{moment(startTime).format('HH:mm')}-{moment(endTime).format('HH:mm')}</h5>
                 <h6 className="center">{description}</h6>
               </div>
             </div>
