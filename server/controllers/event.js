@@ -21,7 +21,7 @@ module.exports = {
       })
       .populate({
         path: 'attendees',
-        select: 'name _id picture' 
+        select: 'name _id picture',
       })
       .exec((err, event) => {
         if (err) {
