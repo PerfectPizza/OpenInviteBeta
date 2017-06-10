@@ -1,4 +1,5 @@
 import { createStore, combineReducers } from 'redux';
+import loadGoogleMapsAPI from 'load-google-maps-api';
 import events from '../reducers/events';
 import user from '../reducers/user';
 import map from '../reducers/map';
@@ -17,5 +18,11 @@ const store = createStore(
 store.subscribe(() => {
   saveState(store.getState());
 });
+
+loadGoogleMapsAPI({ libraries: ['places'], key: 'AIzaSyA2RynigysTx4S1q-F33uTwoble1SG6LrU' })
+  .then((googleMapsClient) => {
+    store.dispatch({ type: 'STORE MAP', payload: googleMapsClient });
+  })
+  .catch(err => console.error('failed to load map,', err));
 
 export default store;

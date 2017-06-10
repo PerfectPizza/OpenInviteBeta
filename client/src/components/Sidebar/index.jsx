@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import loadGoogleMapsAPI from 'load-google-maps-api';
 import PropTypes from 'prop-types';
 import proptypes from '../proptypes';
 import { storeUser } from '../actions/user';
@@ -42,10 +41,6 @@ class Sidebar extends Component {
         },
         null,
         { time: 2000 });
-      })
-      .then(() => loadGoogleMapsAPI({ libraries: ['places'], key: 'AIzaSyA2RynigysTx4S1q-F33uTwoble1SG6LrU' }))
-      .then((googleMapsClient) => {
-        this.props.storeMap(googleMapsClient);
       })
       .catch((err) => {
         // gracefully check errors to determine source and give appropriate user feedback
