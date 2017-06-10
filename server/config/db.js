@@ -6,10 +6,10 @@ mongoose.connection
   .once('open', () => console.log('Connected to mongodb.'))
   .on('error', error => console.log('Error connecting to MongoLab:', error));
 
-if (process.env.NODE_ENV === 'dev') {
-  mongoose.connect('mongodb://localhost/OI_dev');
+if (process.env.NODE_ENV === 'prod') {
+  mongoose.connect('prodserver');
 } else if (process.env.NODE_ENV === 'test') {
   mongoose.connect('mongodb://localhost/OI_test');
 } else {
-  mongoose.connect('prodserver');
+  mongoose.connect('mongodb://localhost/OI_dev');
 }

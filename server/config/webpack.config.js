@@ -19,9 +19,9 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['latest', { modules: false }],
+              'es2017',
               'react',
-              'stage-1',
+              'stage-0',
             ],
           },
         },
