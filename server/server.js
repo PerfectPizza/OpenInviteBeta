@@ -39,6 +39,10 @@ if (process.env.NODE_ENV === 'dev') {
   }));
 }
 
+app.get('*', (req, res) => {
+  res.redirect('/');
+});
+
 app.listen(process.env.port || 3000, () => {
   console.log(`app listening on ${process.env.port || '3000'}`);
 });

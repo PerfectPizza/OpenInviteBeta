@@ -11,6 +11,11 @@ require('./styles.css');
 
 class List extends Component {
 
+  constructor() {
+    super();
+    localStorage.OpenInviteBetaLocation = '/list';
+  }
+
   componentDidMount() {
     axios.get('/api/event')
       .then(({ data: events }) => {

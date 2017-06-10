@@ -3,14 +3,25 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment-timezone';
+import loadGoogleMapsAPI from 'load-google-maps-api';
 import PropTypes from 'prop-types';
 import proptypes from '../proptypes';
 import { updateEvent } from '../actions/events';
+import { storeMap } from '../actions/map';
 import RSVP from '../RSVP';
 
 require('./styles.css');
 
 class Event extends Component {
+
+  constructor({ match }) {
+    super();
+    axios.get(`/api/event/${match.params.eventId}`)
+      .then(({ data }) => {
+        this.props.updateEvent(data);
+      });
+  }
+
   componentDidMount() {
     const googleMapsClient = this.props.map;
     const mapEl = document.getElementById('EventMap');
@@ -20,11 +31,8 @@ class Event extends Component {
       position: this.props.event.location,
       map,
     });
-    axios.get(`/api/event/${this.props.event._id}`)
-      .then(({ data }) => {
-        this.props.updateEvent(data);
-      });
   }
+
   render() {
     const { event, user } = this.props;
     const { title,
