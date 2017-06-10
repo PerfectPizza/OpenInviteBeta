@@ -3,6 +3,7 @@ const { user, event } = require('../controllers');
 const { validateIsCreator } = require('./util');
 
 router.get('/event', user.getEventsByUserId);
+router.get('/event/:event_id', event.getEventById);
 
 router.post('/event', event.createEvent);
 router.post('/event/:event_id/attendee', event.addAttendeeByEventId);

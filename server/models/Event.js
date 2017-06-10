@@ -30,7 +30,7 @@ const EventSchema = new Schema({
     type: Date,
     required: [true, 'A valid end time is required for each event'],
   },
-  createdAt: { type: Date, expires: 60 * 60 * 24, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
   attendees: [{ type: String, ref: 'User' }],
   location: {
     lat: {
