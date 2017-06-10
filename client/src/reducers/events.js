@@ -14,8 +14,11 @@ const eventsReducer = (state = [], { type, payload }) => {
   if (type === 'ADD ATTENDEE') {
     // payload is an object containing an eventId, a userId and a userName
     const newEvent = state.find(event => event._id === payload.eventId);
-    newEvent.attendees.push({ _id: payload.userId, name: payload.userName, picture: payload.userPicture });
-    console.log(newEvent.attendees);
+    newEvent.attendees.push({
+      _id: payload.userId,
+      name: payload.userName,
+      picture: payload.userPicture,
+    });
     return [...state.filter(event => event._id !== payload.eventId), newEvent];
   }
   if (type === 'REMOVE ATTENDEE') {

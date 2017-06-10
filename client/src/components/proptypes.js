@@ -6,15 +6,15 @@ const event = PropTypes.shape({
     name: PropTypes.string,
     _id: PropTypes.string,
     picture: PropTypes.string,
-  }).isRequired,
-  _id: PropTypes.string.isRequired,
-  start_time: PropTypes.string.isRequired,
-  end_time: PropTypes.string.isRequired,
-  attendees: PropTypes.array.isRequired,
+  }),
+  _id: PropTypes.string,
+  start_time: PropTypes.string,
+  end_time: PropTypes.string,
+  attendees: PropTypes.array,
   location: PropTypes.shape({
-    lat: PropTypes.number.isRequired,
-    lng: PropTypes.number.isRequired,
-  }).isRequired,
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+  }),
 });
 
 const events = PropTypes.arrayOf(event);

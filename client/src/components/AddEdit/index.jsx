@@ -5,8 +5,9 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import proptypes from '../proptypes';
-import { localToUTC, UTCToLocal } from '../util';
+import { localToUTC, UTCToLocal, todayOrTomorrow } from '../util';
 import { deleteEvent } from '../actions/events';
+import TimePicker from 'material-ui/TimePicker';
 
 require('./styles.css');
 
@@ -17,8 +18,8 @@ class AddEdit extends Component {
     this.state = {
       title: event.title,
       description: event.description,
-      start_time: event.start_time,
-      end_time: event.end_time,
+      start_time: UTCToLocal(event.start_time),
+      end_time: UTCToLocal(event.end_time),
       location: event.location || userLocation,
     };
   }
@@ -81,9 +82,14 @@ class AddEdit extends Component {
   }
 
   addOrEdit() {
+    const body = {
+      ...this.state,
+      start_time: localToUTC(this.state.start_time),
+      end_time: localToUTC(this.state.end_time),
+    };
     const query = this.props.event._id
-    ? axios.put(`/api/event/${this.props.event._id}`, this.state)
-    : axios.post('/api/event', this.state);
+    ? axios.put(`/api/event/${this.props.event._id}`, body)
+    : axios.post('/api/event', body);
     query
       .then(() => {
         this.props.deleteEvent(this.props.event._id);
@@ -156,29 +162,25 @@ class AddEdit extends Component {
             </div>
             <div className="row">
               <div className="col s5 input-field">
-                <input
-                  className="input-list"
-                  id="start_time-AddEdit"
-                  onChange={e => this.setState({ start_time: localToUTC(e.target.value) })}
-                  type="datetime-local"
-                  value={UTCToLocal(this.state.start_time)}
+                <TimePicker
+                  format="24hr"
+                  hintText="24hr Format"
+                  value={new Date(this.state.start_time)}
+                  onChange={(event, time) => this.setState({ start_time: todayOrTomorrow(time) })}
                 />
-                <label
-                  className="active label-list"
-                  htmlFor="start_time-AddEdit"
+                 <label
+                  className="label-list active"
                 >start time</label>
               </div>
               <div className="col s5 input-field">
-                <input
-                  className="input-list"
-                  id="end_time-AddEdit"
-                  onChange={e => this.setState({ end_time: localToUTC(e.target.value) })}
-                  type="datetime-local"
-                  value={UTCToLocal(this.state.end_time)}
+                <TimePicker
+                  format="24hr"
+                  hintText="24hr Format"
+                  value={new Date(this.state.end_time)}
+                  onChange={(event, time) => this.setState({ end_time: todayOrTomorrow(time) })}
                 />
-                <label
-                  className="active label-list"
-                  htmlFor="end_time-AddEdit"
+                 <label
+                  className="label-list active"
                 >end time</label>
               </div>
             </div>
@@ -204,8 +206,8 @@ AddEdit.defaultProps = {
   event: {
     title: '',
     description: '',
-    start_time: '',
-    end_time: '',
+    start_time: new Date(),
+    end_time: new Date(),
   },
 };
 

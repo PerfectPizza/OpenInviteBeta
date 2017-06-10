@@ -18,7 +18,6 @@ module.exports = {
     };
   },
   addAttendee(eventId, userId, userName, userPicture) {
-    console.log(userPicture);
     return {
       type: 'ADD ATTENDEE',
       payload: { eventId, userId, userName, userPicture },
