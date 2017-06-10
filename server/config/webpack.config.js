@@ -19,7 +19,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: [
-              'es2017',
+              'latest',
               'react',
               'stage-0',
             ],
