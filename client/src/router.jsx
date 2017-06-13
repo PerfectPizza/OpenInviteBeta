@@ -24,7 +24,7 @@ const ViewRouter = () => (
       <Route path="/list" component={List} />
       <Route path="/edit/:eventId?" component={AddEdit} />
       <Route path="/event/:eventId" component={Event} />
-      <Redirect from="*" to={localStorage['OpenInviteBetaLocation']} />
+      <Redirect from="*" to={localStorage.OpenInviteBetaLocation} />
     </div>
   </Router>
 );

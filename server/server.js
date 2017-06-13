@@ -21,12 +21,6 @@ app.use(session);
 app.use(bodyParser.json());
 addPassportMiddleware(app);
 
-app.use('/', baseRouter);
-app.use('/api/', apiRouter);
-app.use('/login', authRouter);
-
-app.use(express.static(path.join(__dirname, '../client/public')));
-
 if (process.env.NODE_ENV === 'dev') {
   app.use(webpackDevMiddleware(compiler, {
     hot: true,
@@ -38,6 +32,12 @@ if (process.env.NODE_ENV === 'dev') {
     historyApiFallback: true,
   }));
 }
+
+app.use('/', baseRouter);
+app.use('/api/', apiRouter);
+app.use('/login', authRouter);
+app.use(express.static(path.join(__dirname, '../client/public')));
+
 
 app.get('*', (req, res) => {
   res.redirect('/');
