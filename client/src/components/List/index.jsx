@@ -13,7 +13,6 @@ class List extends Component {
 
   constructor() {
     super();
-    localStorage.OpenInviteBetaLocation = '/list';
   }
 
   componentDidMount() {
@@ -26,6 +25,7 @@ class List extends Component {
   }
 
   render() {
+    localStorage.OpenInviteBetaLocation = '/list';
     return (
       <div>
         <ul className="collection">

@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import proptypes from '../proptypes';
 import { storeUser } from '../actions/user';
 import { storeLocation } from '../actions/location';
-import { storeMap } from '../actions/map';
 
 require('./styles.css');
 
@@ -42,10 +41,7 @@ class Sidebar extends Component {
         null,
         { time: 2000 });
       })
-      .catch((err) => {
-        // gracefully check errors to determine source and give appropriate user feedback
-        console.error(err);
-      });
+      .catch(err => console.error('failed to load map,', err));
   }
 
   render() {
@@ -81,9 +77,6 @@ const mapDispatchToProps = dispatch => ({
   },
   storeLocation: (location) => {
     dispatch(storeLocation(location));
-  },
-  storeMap: (googleMapsClient) => {
-    dispatch(storeMap(googleMapsClient));
   },
 });
 
