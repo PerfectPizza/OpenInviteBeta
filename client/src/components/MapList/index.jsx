@@ -59,6 +59,7 @@ class MapList extends Component {
   }
 
   render() {
+    localStorage.OpenInviteBetaLocation = '/list';
     return (
       <div id="ListMap" />
     );
@@ -87,7 +88,7 @@ MapList.PropTypes = {
   addEvents: PropTypes.func.isRequired,
   addMarkers: PropTypes.func.isRequired,
   userLocation: proptypes.userLocation.isRequired,
-  map: proptypes.map.isRequired,
+  map: proptypes.map,
 };
 
 MapList.defaultProps = {

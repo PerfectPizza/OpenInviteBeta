@@ -128,6 +128,7 @@ class AddEdit extends Component {
   }
 
   render() {
+    localStorage.OpenInviteBetaLocation = '/list';
     return (
       <div className="main">
         <div className="row">
@@ -185,10 +186,12 @@ class AddEdit extends Component {
               </div>
             </div>
           </form>
+          { this.props.map &&
           <div className="row">
             <input id="pac-input" className="controls" type="text" placeholder="Search Box" />
             <div id="AddEditMap" />
           </div>
+          }
         </div>
       </div>
     );
@@ -197,7 +200,7 @@ class AddEdit extends Component {
 
 AddEdit.propTypes = {
   event: proptypes.event,
-  map: proptypes.map.isRequired,
+  map: proptypes.map,
   userLocation: proptypes.userLocation.isRequired,
   deleteEvent: PropTypes.func.isRequired,
 };

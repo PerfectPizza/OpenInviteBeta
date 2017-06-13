@@ -11,6 +11,10 @@ require('./styles.css');
 
 class List extends Component {
 
+  constructor() {
+    super();
+  }
+
   componentDidMount() {
     axios.get('/api/event')
       .then(({ data: events }) => {
@@ -21,6 +25,7 @@ class List extends Component {
   }
 
   render() {
+    localStorage.OpenInviteBetaLocation = '/list';
     return (
       <div>
         <ul className="collection">

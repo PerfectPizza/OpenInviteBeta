@@ -13,6 +13,25 @@ module.exports = {
         res.status(500).send(parseErr(err));
       });
   },
+  getEventById(req, res) {
+    Event.findById(req.params.event_id)
+      .populate({
+        path: 'creator',
+        select: 'name _id picture',
+      })
+      .populate({
+        path: 'attendees',
+        select: 'name _id picture',
+      })
+      .exec((err, event) => {
+        if (err) {
+          console.error('error in getUser', parseErr(err));
+          res.status(500).send(parseErr(err));
+        } else {
+          res.send(event);
+        }
+      });
+  },
   updateEvent(req, res) {
     Event.findByIdAndUpdate(req.params.event_id,
       {
